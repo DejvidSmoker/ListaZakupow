@@ -31,6 +31,7 @@ import dejwid_smoker.sprawunki_v2.fragments_main.ListsFragment;
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener {
 
+//    testcomment
     private static final int DRAWER_CLOSE_DELAY = 300;
     private static final String NAV_ITEM_ID = "nav_item_id";
 
