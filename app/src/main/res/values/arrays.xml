@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="categories">
+        <item>Nabial</item>
+        <item>Owoce</item>
+        <item>Higiena</item>
+        <item>Warzywa</item>
+        <item>Wody</item>
+        <item>Pieczywo</item>
+        <item>Mrozonki</item>
+    </array>
+
+    <array name="fruits">
+        <item>Agrest</item>
+        <item>Ananas</item>
+        <item>Arbuz</item>
+        <item>Banan</item>
+        <item>Borówka</item>
+        <item>Brzoskwinia</item>
+        <item>Cytryna</item>
+        <item>Czereśnia</item>
+        <item>Grejpfrut</item>
+        <item>Gruszka</item>
+        <item>Jabłko</item>
+        <item>Jagoda</item>
+        <item>Jeżyna</item>
+        <item>Kokos</item>
+        <item>Malina</item>
+        <item>Morela</item>
+        <item>Pomarancza</item>
+        <item>Porzeczka</item>
+        <item>Poziomka</item>
+        <item>Śliwka</item>
+        <item>Winogorono</item>
+        <item>Wiśnia</item>
+    </array>
+
+    <array name="vegetables">
+        <item>Brokuł</item>
+        <item>Kalafior</item>
+        <item>Ziemniak</item>
+        <item>Kalarepa</item>
+        <item>Kapusta</item>
+        <item>Cebula</item>
+        <item>Czosnek</item>
+        <item>Por</item>
+        <item>Szczypiorek</item>
+        <item>Szpinak</item>
+        <item>Rukola</item>
+        <item>Sałata</item>
+        <item>Seler</item>
+        <item>Dynia</item>
+        <item>Ogórek</item>
+        <item>Pomidor</item>
+        <item>Fasola</item>
+        <item>Koper</item>
+        <item>Burak</item>
+        <item>Rzepa</item>
+    </array>
+
+    <array name="diary">
+        <item>Mleko</item>
+        <item>Ser</item>
+        <item>Jogurt</item>
+        <item>Śmietana</item>
+        <item>Maślanka</item>
+        <item>Jajka</item>
+        <item>Kefir</item>
+        <item>Twaróg</item>
+    </array>
+
+    <array name="hygiene">
+        <item>Dezodorant</item>
+        <item>Krem</item>
+        <item>Pieluchy</item>
+        <item>Podpaski</item>
+        <item>Mydło</item>
+        <item>Żel pod prysznic</item>
+        <item>Żel do włosów</item>
+        <item>Pasta do zębów</item>
+        <item>Waciki</item>
+    </array>
+
+    <array name="drinks">
+        <item>Woda</item>
+        <item>Pepsi</item>
+        <item>7up</item>
+        <item>Sprite</item>
+        <item>Sok</item>
+        <item>Herbata</item>
+        <item>Kawa</item>
+        <item>Energetyk</item>
+        <item>Wyskokowe</item>
+    </array>
+
+    <array name="bread">
+        <item>Bułki</item>
+        <item>Chleb</item>
+        <item>Chleb ciemny</item>
+        <item>Chleb jasny</item>
+        <item>Weka</item>
+        <item>Rogale</item>
+        <item>Drożdzówka z makiem</item>
+        <item>Drożdzówka z budyniem</item>
+        <item>Drożdzówka z serem</item>
+        <item>Wafle ryżowe</item>
+    </array>
+
+    <array name="frozen">
+        <item>zupa jarzynowa</item>
+        <item>zupa pomidorowa</item>
+        <item>zupa kalafiorowa</item>
+        <item>pizza</item>
+        <item>frytki</item>
+        <item>ryba</item>
+        <item>potrawka grecka</item>
+    </array>
+
+    <array name="alcohols">
+        <item>piwo</item>
+        <item>wino</item>
+        <item>whiskey</item>
+        <item>wódka</item>
+        <item>spirytus</item>
+        <item>wódka barwiona ;)</item>
+        <item>rum</item>
+    </array>
+    
+</resources>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory
+        android:title="@string/sharing_preferences"
+        android:key="pref_key_storage_settings">
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/default_values"
+        android:key="pref_default_values">
+
+        <SwitchPreference
+            android:title="Domyślne wartości"
+            android:summary="Edytuj domyślne wartości"
+            android:key="pref_default_values" />
+
+        <EditTextPreference
+            android:dialogTitle="Domyślna lista"
+            android:key="pref_default_list_name"
+            android:dependency="pref_default_values"
+            android:negativeButtonText="Anuluj"
+            android:positiveButtonText="OK"
+            android:title="Nazwa listy"
+            android:summary="Domyślna nazwa listy"/>
+
+        <EditTextPreference
+            android:dialogTitle="Domyślna cena"
+            android:key="pref_default_price"
+            android:inputType="numberDecimal"
+            android:dependency="pref_default_values"
+            android:negativeButtonText="Anuluj"
+            android:positiveButtonText="OK"
+            android:title="Cena"
+            android:defaultValue="2.99"
+            android:summary="Domyślna cena przedmiotu"/>
+
+    </PreferenceCategory>
+</PreferenceScreen>
