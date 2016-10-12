@@ -26,7 +26,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="dejwid_smoker.sprawunki_v2.MainActivity" />
         </activity>
-        <activity android:name=".activities.PreferencesActivity"></activity>
+        <activity android:name=".activities.PreferencesActivity" />
+        <activity
+            android:name=".activities.EditItemActivity"
+            android:label="@string/title_activity_edit_item"
+            android:parentActivityName=".add_items.AddItemsActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="dejwid_smoker.sprawunki_v2.add_items.AddItemsActivity" />
+        </activity>
     </application>
 
 </manifest>
