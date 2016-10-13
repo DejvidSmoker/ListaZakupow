@@ -1,5 +1,6 @@
 package dejwid_smoker.sprawunki_v2.add_items;
 
+import android.content.Intent;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import dejwid_smoker.sprawunki_v2.R;
+import dejwid_smoker.sprawunki_v2.activities.EditItemActivity;
 import dejwid_smoker.sprawunki_v2.database.ListDatabaseHelper;
 
 /**
@@ -24,6 +26,7 @@ public class ShowItemsFragment extends Fragment {
 
     public static final String ITEMS_ARRAY = "items_array";
     public static final String CURRENT_NAME_LIST = "current_list_name";
+    public static final String ITEM_POSITION = "item_position";
 
     private ArrayList<String> items;
     private String currentListName;
@@ -43,7 +46,6 @@ public class ShowItemsFragment extends Fragment {
             items = args.getStringArrayList(ITEMS_ARRAY);
             currentListName = args.getString(CURRENT_NAME_LIST);
 
-
             CaptionedAddItemsAdapter adapter = new CaptionedAddItemsAdapter(items);
             recyclerView.setAdapter(adapter);
 
@@ -53,7 +55,10 @@ public class ShowItemsFragment extends Fragment {
             adapter.setListener(new CaptionedAddItemsAdapter.Listener() {
                 @Override
                 public void onClick(int position, String name) {
-
+                    Intent intent = new Intent(getActivity(), EditItemActivity.class);
+                    intent.putExtra(CURRENT_NAME_LIST, currentListName);
+                    intent.putExtra(ITEM_POSITION, position);
+                    startActivity(intent);
                 }
 
                 @Override

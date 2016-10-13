@@ -122,8 +122,16 @@
         <item>whiskey</item>
         <item>wódka</item>
         <item>spirytus</item>
-        <item>wódka barwiona ;)</item>
         <item>rum</item>
     </array>
-    
+
+    <array name="units">
+        <item>sztuk</item>
+        <item>kg</item>
+        <item>dag</item>
+        <item>g</item>
+        <item>l</item>
+        <item>ml</item>
+    </array>
+
 </resources>

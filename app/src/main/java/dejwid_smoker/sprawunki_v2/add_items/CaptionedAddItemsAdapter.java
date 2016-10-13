@@ -53,7 +53,7 @@ public class CaptionedAddItemsAdapter extends RecyclerView.Adapter<CaptionedAddI
     public void onBindViewHolder(ViewHolder holder, final int position) {
         CardView cardView = holder.cardView;
 
-        ImageView imageView = (ImageView) cardView.findViewById(R.id.delete_card_view_add_items);
+        final ImageView imageView = (ImageView) cardView.findViewById(R.id.delete_card_view_add_items);
         final TextView textView = (TextView) cardView.findViewById(R.id.text_card_add_items);
 
         textView.setText(items.get(position));
@@ -61,6 +61,7 @@ public class CaptionedAddItemsAdapter extends RecyclerView.Adapter<CaptionedAddI
             @Override
             public void onClick(View v) {
                 textView.setBackgroundResource(R.color.item_clicked);
+                imageView.setBackgroundResource(R.color.item_clicked);
                 listener.onClick(position, items.get(position));
             }
         });

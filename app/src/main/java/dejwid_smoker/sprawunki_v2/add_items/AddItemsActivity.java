@@ -165,6 +165,14 @@ public class AddItemsActivity extends AppCompatActivity
             ContentValues contentValues = new ContentValues();
             contentValues.put("ITEM_NAME", justAdded);
             contentValues.put("ITEM_CHECKED", 0);
+//            DODAC DOMYSLNE
+//            !!!!!!//            DODAC DOMYSLNE
+//            !!!!!!//            DODAC DOMYSLNE
+//            !!!!!!
+//            !!!!!!
+            contentValues.put("ITEM_PRICE", 1);
+            contentValues.put("ITEM_COUNT", 1);
+            contentValues.put("ITEM_UNIT", "default");
 
             db.insert(listName + REST_OF_TABLE_NAME, null, contentValues);
 
@@ -175,7 +183,6 @@ public class AddItemsActivity extends AppCompatActivity
 
     //odczyt i pokazanie itemow listy w showfrag
     private void showListItems(Fragment fragment) {
-
         try {
             db = openHelper.getReadableDatabase();
             Cursor cursor = db.query(listName + REST_OF_TABLE_NAME,
@@ -190,19 +197,16 @@ public class AddItemsActivity extends AppCompatActivity
                 int listNr = 0;
 
                 if (cursor.moveToFirst()) {
-                    //lists[listNr] = cursor.getString(0);
                     items.add(listNr, cursor.getString(0));
                     listNr++;
                 }
                 if (count > 1) {
                     while (cursor.moveToNext()) {
-                        //lists[listNr] = cursor.getString(0);
                         items.add(listNr, cursor.getString(0));
                         listNr++;
                     }
                 }
             }
-
             args.putStringArrayList(ShowItemsFragment.ITEMS_ARRAY, items);
             args.putString(ShowItemsFragment.CURRENT_NAME_LIST, listName);
             fragment.setArguments(args);
@@ -218,44 +222,22 @@ public class AddItemsActivity extends AppCompatActivity
         ContentValues contentValues = new ContentValues();
         try {
             db = openHelper.getWritableDatabase();
+            contentValues.put("NAME", lName);
+            db.insert("lists", null, contentValues);
 
             db.execSQL("CREATE TABLE " + lName + REST_OF_TABLE_NAME
                     + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + "ITEM_NAME TEXT, "
                     + "ITEM_CHECKED INTEGER, "
-                    + "ITEM_PRICE REAL, "
-                    + "ITEM_COUNT REAL, "
-                    + "ITEM_UNIT INTEGER);");
-
-            contentValues.put("NAME", lName);
-            db.insert("lists", null, contentValues);
+                    + "ITEM_PRICE TEXT, "
+                    + "ITEM_COUNT TEXT, "
+                    + "ITEM_UNIT TEXT, "
+                    + "ITEM_COMMENT TEXT);");
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
-    //pobieraie listy z DB dla oItemCategoryListClick() i showListItems()
-/*    private String getItemsFromDb() {
-        String items = "";
-        try {
-            SQLiteOpenHelper openHelper = new ListDatabaseHelper(this);
-
-            db = openHelper.getReadableDatabase();
-            cursor = db.query("lists",
-                    new String[] {"NAME", "ITEMS"},
-                    "NAME = ?",
-                    new String[] {listName},
-                    null, null, null);
-
-            if (cursor.moveToFirst()) {
-                items =  cursor.getString(1);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return items;
-    }*/
 
     private void runFragment(Fragment fragment) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
