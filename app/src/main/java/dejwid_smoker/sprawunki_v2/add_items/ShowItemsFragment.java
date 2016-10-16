@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import dejwid_smoker.sprawunki_v2.R;
-import dejwid_smoker.sprawunki_v2.activities.EditItemActivity;
+import dejwid_smoker.sprawunki_v2.edit_item.EditItemActivity;
 import dejwid_smoker.sprawunki_v2.database.ListDatabaseHelper;
 
 /**
@@ -27,6 +27,7 @@ public class ShowItemsFragment extends Fragment {
     public static final String ITEMS_ARRAY = "items_array";
     public static final String CURRENT_NAME_LIST = "current_list_name";
     public static final String ITEM_POSITION = "item_position";
+    public static final String ITEM_NAME = "item_name";
 
     private ArrayList<String> items;
     private String currentListName;
@@ -57,6 +58,7 @@ public class ShowItemsFragment extends Fragment {
                 public void onClick(int position, String name) {
                     Intent intent = new Intent(getActivity(), EditItemActivity.class);
                     intent.putExtra(CURRENT_NAME_LIST, currentListName);
+                    intent.putExtra(ITEM_NAME, name);
                     intent.putExtra(ITEM_POSITION, position);
                     startActivity(intent);
                 }

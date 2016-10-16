@@ -30,6 +30,9 @@
     <string name="set_unit">Jednostka:</string>
     <string name="set_gotit">Zakupiono:</string>
     <string name="set_comment">Uwagi:</string>
+    <string name="check_price">Cena:</string>
+    <string name="check_count">Ilość:</string>
+    <string name="check_comment">Uwagi:</string>
 
 
 </resources>

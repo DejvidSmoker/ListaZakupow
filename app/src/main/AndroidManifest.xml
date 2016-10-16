@@ -12,10 +12,10 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
         </activity>
         <activity
             android:name=".add_items.AddItemsActivity"
@@ -28,7 +28,7 @@
         </activity>
         <activity android:name=".activities.PreferencesActivity" />
         <activity
-            android:name=".activities.EditItemActivity"
+            android:name=".edit_item.EditItemActivity"
             android:label="@string/title_activity_edit_item"
             android:parentActivityName=".add_items.AddItemsActivity"
             android:theme="@style/AppTheme.NoActionBar"
