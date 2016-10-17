@@ -160,27 +160,6 @@ public class AddItemsActivity extends AppCompatActivity
         showCurrFrag(SHOW_ITEMS_FRAGMENT);
     }
 
-    private void addNewItemToDb(String justAdded) {
-        try {
-            ContentValues contentValues = new ContentValues();
-            contentValues.put("ITEM_NAME", justAdded);
-            contentValues.put("ITEM_CHECKED", 0);
-//            DODAC DOMYSLNE
-//            !!!!!!//            DODAC DOMYSLNE
-//            !!!!!!//            DODAC DOMYSLNE
-//            !!!!!!
-//            !!!!!!
-            contentValues.put("ITEM_PRICE", 1);
-            contentValues.put("ITEM_COUNT", 1);
-            contentValues.put("ITEM_UNIT", "default");
-
-            db.insert(listName + REST_OF_TABLE_NAME, null, contentValues);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     //odczyt i pokazanie itemow listy w showfrag
     private void showListItems(Fragment fragment) {
         try {
@@ -229,8 +208,8 @@ public class AddItemsActivity extends AppCompatActivity
                     + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + "ITEM_NAME TEXT, "
                     + "ITEM_CHECKED INTEGER, "
-                    + "ITEM_PRICE TEXT, "
-                    + "ITEM_COUNT TEXT, "
+                    + "ITEM_PRICE REAL, "
+                    + "ITEM_COUNT REAL, "
                     + "ITEM_UNIT TEXT, "
                     + "ITEM_COMMENT TEXT);");
 
@@ -239,6 +218,27 @@ public class AddItemsActivity extends AppCompatActivity
         }
     }
 
+    private void addNewItemToDb(String justAdded) {
+        try {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("ITEM_NAME", justAdded);
+            contentValues.put("ITEM_CHECKED", 0);
+//            DODAC DOMYSLNE
+//            !!!!!!//            DODAC DOMYSLNE
+
+            contentValues.put("ITEM_PRICE", 1.1);
+            contentValues.put("ITEM_COUNT", 1.1);
+            contentValues.put("ITEM_UNIT", "default");
+            contentValues.put("ITEM_UNIT", "comm");
+
+            db.insert(listName + REST_OF_TABLE_NAME, null, contentValues);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     private void runFragment(Fragment fragment) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content_add_item, fragment, VISIBLE_FRAGMENT)
@@ -246,5 +246,5 @@ public class AddItemsActivity extends AppCompatActivity
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .commit();
     }
-}
 
+}
