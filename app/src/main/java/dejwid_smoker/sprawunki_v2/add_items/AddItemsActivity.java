@@ -211,7 +211,7 @@ public class AddItemsActivity extends AppCompatActivity
                     + "ITEM_PRICE REAL, "
                     + "ITEM_COUNT REAL, "
                     + "ITEM_UNIT TEXT, "
-                    + "ITEM_COMMENT TEXT);");
+                    + "ITEM_COMMENT TEXT); ");
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -229,7 +229,7 @@ public class AddItemsActivity extends AppCompatActivity
             contentValues.put("ITEM_PRICE", 1.1);
             contentValues.put("ITEM_COUNT", 1.1);
             contentValues.put("ITEM_UNIT", "default");
-            contentValues.put("ITEM_UNIT", "comm");
+            contentValues.put("ITEM_COMMENT", "comm");
 
             db.insert(listName + REST_OF_TABLE_NAME, null, contentValues);
 

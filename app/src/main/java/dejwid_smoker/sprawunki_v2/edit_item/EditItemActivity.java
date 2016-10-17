@@ -2,6 +2,7 @@ package dejwid_smoker.sprawunki_v2.edit_item;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
@@ -17,9 +18,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import dejwid_smoker.sprawunki_v2.R;
+import dejwid_smoker.sprawunki_v2.add_items.AddItemsActivity;
 import dejwid_smoker.sprawunki_v2.add_items.ShowItemsFragment;
+import dejwid_smoker.sprawunki_v2.database.ItemProperties;
+import dejwid_smoker.sprawunki_v2.database.ListDatabaseHelper;
 
 public class EditItemActivity extends AppCompatActivity {
 
@@ -79,13 +84,13 @@ public class EditItemActivity extends AppCompatActivity {
             }
         });
 
-/*        price = (EditText) findViewById(R.id.set_price);
-        count = (EditText) findViewById(R.id.set_count);
-        comment = (EditText) findViewById(R.id.set_comment);
-        unit = (AppCompatSpinner) findViewById(R.id.set_unit);
-        gotIt = (Switch) findViewById(R.id.set_gotit);
-
-        price.setText("2.99", TextView.BufferType.EDITABLE);*/
+//        price = (EditText) findViewById(R.id.set_price);
+//        count = (EditText) findViewById(R.id.set_count);
+//        comment = (EditText) findViewById(R.id.set_comment);
+//        unit = (AppCompatSpinner) findViewById(R.id.set_unit);
+//        gotIt = (Switch) findViewById(R.id.set_gotit);
+//
+//        price.setText("2.99", TextView.BufferType.EDITABLE);
 
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_edit_item);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -93,11 +98,11 @@ public class EditItemActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, listName + " pos: " + itemPosOnList, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                showCurrFrag(1);
+                workOnDb(listName, 1, itemPosOnList);
             }
         });
 
-        showCurrFrag(currentFragment);
+        workOnDb(listName, currentFragment, itemPosOnList);
     }
 
     @Override
@@ -112,7 +117,7 @@ public class EditItemActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(homeEnabled);
     }
 
-    private void showCurrFrag(int cFrag) {
+    private void showCurrFrag(ItemProperties properties, int cFrag) {
         Fragment fragment;
         switch (cFrag) {
             case ITEM_INFO_FRAGMENT:
@@ -134,35 +139,62 @@ public class EditItemActivity extends AppCompatActivity {
                 .commit();
     }
 
-/*    private void workOnDb(int whichAction) {
+    private ItemProperties workOnDb(String lName, int currentFragment, int iPosition) {
+        ItemProperties itemProperties = null;
         try {
             openHelper = new ListDatabaseHelper(this);
             db = openHelper.getWritableDatabase();
 
-            switch (whichAction) {
-                case SET_ITEM_PROPERTIES:
-                    setItemProperties();
+            switch (currentFragment) {
+                case ITEM_INFO_FRAGMENT:
+                    itemProperties = getItemPropertiesShow(itemProperties, lName, iPosition);
+                    Toast.makeText(getApplication(), "HALO?!!!!", Toast.LENGTH_SHORT)
+                            .show();
+                    break;
+                case EDIT_ITEM_FRAGMENT:
+                    itemProperties = getItemPropertiesEdit(itemProperties, lName, iPosition);
                     break;
             }
+
+            showCurrFrag(itemProperties, currentFragment);
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return itemProperties;
     }
 
-    private void setItemProperties() {
-        cursor = db.query(listName + AddItemsActivity.REST_OF_TABLE_NAME,
-                new String[] {"_id", "ITEM_NAME", "ITEM_CHECKED", "ITEM_PRICE", "ITEM_COUNT",
-                "ITEM_UNIT", "ITEM_COMMENT"}, null, null, null, null, null);
-        int count = cursor.getCount();
-
-        if (count == 0) {
-            if (cursor.moveToFirst()) {
-                price.setText(cursor.getString(3));
-
-            }
+    private ItemProperties getItemPropertiesEdit(ItemProperties ipObj, String lName, int iPos) {
+        cursor = db.query(lName + AddItemsActivity.REST_OF_TABLE_NAME,
+                new String[] {"ITEM_CHECKED", "ITEM_PRICE", "ITEM_COUNT", "ITEM_UNIT", "ITEM_COMMENT"},
+                "_id = ?",
+                new String[] {String.valueOf(iPos)}, null, null, null);
+        if (cursor.moveToFirst()) {
+            ipObj = new ItemProperties(cursor.getInt(0), cursor.getDouble(1), cursor.getDouble(2),
+                    cursor.getString(3), "comm");
+            Toast.makeText(getApplication(), "pobrano dane przedmiotu", Toast.LENGTH_SHORT)
+                    .show();
         } else {
-
+            Toast.makeText(getApplication(), "nie pobrano danych przedmiotu", Toast.LENGTH_SHORT)
+                    .show();
         }
-    }*/
+        return ipObj;
+    }
+
+    private ItemProperties getItemPropertiesShow(ItemProperties ipObj, String lName, int iPos) {
+        cursor = db.query(lName + AddItemsActivity.REST_OF_TABLE_NAME,
+                new String[] {"ITEM_PRICE", "ITEM_COUNT", "ITEM_UNIT", "ITEM_COMMENT"},
+                "_id = ?",
+                new String[] {String.valueOf(iPos)}, null, null, null);
+        if (cursor.moveToFirst()) {
+            ipObj = new ItemProperties(cursor.getDouble(0), cursor.getDouble(1),
+                    cursor.getString(2), "comm");
+            Toast.makeText(getApplication(), "pobrano dane przedmiotu", Toast.LENGTH_SHORT)
+                    .show();
+        } else {
+            Toast.makeText(getApplication(), "nie pobrano danych przedmiotu", Toast.LENGTH_SHORT)
+                    .show();
+        }
+        return ipObj;
+    }
 }
