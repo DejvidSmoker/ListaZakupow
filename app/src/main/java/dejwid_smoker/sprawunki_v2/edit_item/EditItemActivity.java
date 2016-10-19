@@ -13,43 +13,33 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.Switch;
 import android.widget.Toast;
-
-import java.util.ArrayList;
 
 import dejwid_smoker.sprawunki_v2.R;
 import dejwid_smoker.sprawunki_v2.add_items.AddItemsActivity;
 import dejwid_smoker.sprawunki_v2.add_items.ShowItemsFragment;
 import dejwid_smoker.sprawunki_v2.database.ListDatabaseHelper;
+import dejwid_smoker.sprawunki_v2.pojo.ItemProperties;
 
 public class EditItemActivity extends AppCompatActivity {
 
     public static final String ITEM_PROPERTIES = "item_properties";
+    public static final String FRAGMENT_PROP = "frag_prop";
     private static final int ITEM_INFO_FRAGMENT = 0;
     private static final int EDIT_ITEM_FRAGMENT = 1;
     private static final String VISIBLE_EDIT_FRAGMENT = "visible_edit_fragment";
     private static final String CURRENT_EDIT_FRAGMENT = "current_edit_fragment";
-    private static final String FRAGMENT_PROP = "frag_prop";
+
     private String listName;
     private String itemName;
     private int itemPosOnList;
     private int currentFragment;
     private Toolbar toolbar;
-
     private SQLiteDatabase db;
     private SQLiteOpenHelper openHelper;
     private Cursor cursor;
-    private EditText price;
-    private EditText count;
-    private EditText comment;
-    private AppCompatSpinner unit;
-    private Switch gotIt;
-    private int whichAction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,15 +110,15 @@ public class EditItemActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(homeEnabled);
     }
 
-    private ArrayList<String> workOnDb(String lName, int currentFragment, int iPosition) {
-        ArrayList<String> itemProperties = null;
+    private ItemProperties workOnDb(String lName, int currentFragment, int iPosition) {
+        ItemProperties itemProperties = null;
         try {
             openHelper = new ListDatabaseHelper(this);
             db = openHelper.getWritableDatabase();
 
             switch (currentFragment) {
                 case ITEM_INFO_FRAGMENT:
-                    itemProperties = getItemPropertiesToShow(itemProperties, lName, iPosition);
+                    itemProperties = getItemPropertiesToEdit(itemProperties, lName, iPosition);
                     break;
                 case EDIT_ITEM_FRAGMENT:
                     itemProperties = getItemPropertiesToEdit(itemProperties, lName, iPosition);
@@ -143,18 +133,18 @@ public class EditItemActivity extends AppCompatActivity {
         return itemProperties;
     }
 
-    private ArrayList<String> getItemPropertiesToEdit(ArrayList<String> list, String lName, int iPos) {
+    private ItemProperties getItemPropertiesToEdit(ItemProperties properties,
+                                                   String lName,
+                                                   int iPos) {
         cursor = db.query(lName + AddItemsActivity.REST_OF_TABLE_NAME,
-                new String[] {"ITEM_CHECKED", "ITEM_PRICE", "ITEM_COUNT", "ITEM_UNIT", "ITEM_COMMENT"},
+                new String[] {"ITEM_NAME", "ITEM_CHECKED", "ITEM_PRICE", "ITEM_COUNT", "ITEM_UNIT",
+                        "ITEM_COMMENT"},
                 "_id = ?",
                 new String[] {String.valueOf(iPos)}, null, null, null);
         if (cursor.moveToFirst()) {
-            list = new ArrayList<String>();
-            list.add(0, String.valueOf(cursor.getInt(0)));
-            list.add(1, String.valueOf(cursor.getDouble(1)));
-            list.add(2, String.valueOf(cursor.getDouble(2)));
-            list.add(3, cursor.getString(3));
-            list.add(4, cursor.getString(4));
+            properties = new ItemProperties(cursor.getString(0), cursor.getInt(1),
+                    cursor.getDouble(2), cursor.getDouble(3), cursor.getString(4),
+                    cursor.getString(5));
 
             Toast.makeText(getApplication(), "pobrano dane przedmiotu", Toast.LENGTH_SHORT)
                     .show();
@@ -162,34 +152,34 @@ public class EditItemActivity extends AppCompatActivity {
             Toast.makeText(getApplication(), "nie pobrano danych przedmiotu", Toast.LENGTH_SHORT)
                     .show();
         }
-        return list;
+        return properties;
     }
+//
+//    private ArrayList<String> getItemPropertiesToShow(ArrayList<String> list, String lName, int iPos) {
+//        cursor = db.query(lName + AddItemsActivity.REST_OF_TABLE_NAME,
+//                new String[] {"ITEM_PRICE", "ITEM_COUNT", "ITEM_UNIT", "ITEM_COMMENT"},
+//                "_id = ?",
+//                new String[] {String.valueOf(iPos)}, null, null, null);
+//        if (cursor.moveToFirst()) {
+//            list = new ArrayList<String>();
+//            list.add(0, String.valueOf(cursor.getDouble(0)));
+//            list.add(1, String.valueOf(cursor.getDouble(1)));
+//            list.add(2, cursor.getString(2));
+//            list.add(3, cursor.getString(3));
+//
+//            Toast.makeText(getApplication(), "pobrano dane przedmiotu", Toast.LENGTH_SHORT)
+//                    .show();
+//        } else {
+//            Toast.makeText(getApplication(), "nie pobrano danych przedmiotu", Toast.LENGTH_SHORT)
+//                    .show();
+//        }
+//        return list;
+//    }
 
-    private ArrayList<String> getItemPropertiesToShow(ArrayList<String> list, String lName, int iPos) {
-        cursor = db.query(lName + AddItemsActivity.REST_OF_TABLE_NAME,
-                new String[] {"ITEM_PRICE", "ITEM_COUNT", "ITEM_UNIT", "ITEM_COMMENT"},
-                "_id = ?",
-                new String[] {String.valueOf(iPos)}, null, null, null);
-        if (cursor.moveToFirst()) {
-            list = new ArrayList<String>();
-            list.add(0, String.valueOf(cursor.getDouble(0)));
-            list.add(1, String.valueOf(cursor.getDouble(1)));
-            list.add(2, cursor.getString(2));
-            list.add(3, cursor.getString(3));
-
-            Toast.makeText(getApplication(), "pobrano dane przedmiotu", Toast.LENGTH_SHORT)
-                    .show();
-        } else {
-            Toast.makeText(getApplication(), "nie pobrano danych przedmiotu", Toast.LENGTH_SHORT)
-                    .show();
-        }
-        return list;
-    }
-
-    private void showCurrFrag(ArrayList<String> properties, int cFrag) {
+    private void showCurrFrag(ItemProperties properties, int cFrag) {
         Fragment fragment;
         Bundle args = new Bundle();
-        args.putStringArrayList(FRAGMENT_PROP, properties);
+        args.putParcelable(FRAGMENT_PROP, properties);
         switch (cFrag) {
             case ITEM_INFO_FRAGMENT:
                 fragment = new ItemInfoFragment();

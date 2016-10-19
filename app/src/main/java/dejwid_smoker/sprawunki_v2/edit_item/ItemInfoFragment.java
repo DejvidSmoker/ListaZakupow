@@ -3,14 +3,14 @@ package dejwid_smoker.sprawunki_v2.edit_item;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import dejwid_smoker.sprawunki_v2.R;
+import dejwid_smoker.sprawunki_v2.pojo.ItemProperties;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,7 +29,9 @@ public class ItemInfoFragment extends Fragment {
 
         Bundle args = getArguments();
         if (args != null) {
-            ArrayList<String> list = args.getStringArrayList(EditItemActivity.ITEM_PROPERTIES);
+            ItemProperties itemProperties = args.getParcelable(EditItemActivity.FRAGMENT_PROP);
+
+            Log.i("ITEM_NAME", itemProperties.getItemName());
 
             TextView price = (TextView) view.findViewById(R.id.check_price);
             TextView count = (TextView) view.findViewById(R.id.check_count);
@@ -44,6 +46,7 @@ public class ItemInfoFragment extends Fragment {
 
         return view;
     }
+
 
 
 }
