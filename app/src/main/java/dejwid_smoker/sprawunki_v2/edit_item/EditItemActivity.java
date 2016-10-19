@@ -140,7 +140,8 @@ public class EditItemActivity extends AppCompatActivity {
                 new String[] {"ITEM_NAME", "ITEM_CHECKED", "ITEM_PRICE", "ITEM_COUNT", "ITEM_UNIT",
                         "ITEM_COMMENT"},
                 "_id = ?",
-                new String[] {String.valueOf(iPos)}, null, null, null);
+                new String[] {String.valueOf(iPos + 1)}, null, null, null);
+
         if (cursor.moveToFirst()) {
             properties = new ItemProperties(cursor.getString(0), cursor.getInt(1),
                     cursor.getDouble(2), cursor.getDouble(3), cursor.getString(4),
