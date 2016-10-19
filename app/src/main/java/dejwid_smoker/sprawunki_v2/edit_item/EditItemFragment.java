@@ -7,13 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import dejwid_smoker.sprawunki_v2.R;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class EditItemFragment extends Fragment {
-
 
     public EditItemFragment() {
         // Required empty public constructor
@@ -23,6 +24,13 @@ public class EditItemFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit_item, container, false);
+
+        Bundle args = getArguments();
+        if (args != null) {
+            ArrayList<String> list = args.getStringArrayList(EditItemActivity.ITEM_PROPERTIES);
+
+
+        }
 
         return view;
     }

@@ -20,18 +20,21 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import dejwid_smoker.sprawunki_v2.R;
 import dejwid_smoker.sprawunki_v2.add_items.AddItemsActivity;
 import dejwid_smoker.sprawunki_v2.add_items.ShowItemsFragment;
-import dejwid_smoker.sprawunki_v2.database.ItemProperties;
 import dejwid_smoker.sprawunki_v2.database.ListDatabaseHelper;
 
 public class EditItemActivity extends AppCompatActivity {
 
+    public static final String ITEM_PROPERTIES = "item_properties";
     private static final int ITEM_INFO_FRAGMENT = 0;
     private static final int EDIT_ITEM_FRAGMENT = 1;
     private static final String VISIBLE_EDIT_FRAGMENT = "visible_edit_fragment";
     private static final String CURRENT_EDIT_FRAGMENT = "current_edit_fragment";
+    private static final String FRAGMENT_PROP = "frag_prop";
     private String listName;
     private String itemName;
     private int itemPosOnList;
@@ -117,15 +120,85 @@ public class EditItemActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(homeEnabled);
     }
 
-    private void showCurrFrag(ItemProperties properties, int cFrag) {
+    private ArrayList<String> workOnDb(String lName, int currentFragment, int iPosition) {
+        ArrayList<String> itemProperties = null;
+        try {
+            openHelper = new ListDatabaseHelper(this);
+            db = openHelper.getWritableDatabase();
+
+            switch (currentFragment) {
+                case ITEM_INFO_FRAGMENT:
+                    itemProperties = getItemPropertiesToShow(itemProperties, lName, iPosition);
+                    break;
+                case EDIT_ITEM_FRAGMENT:
+                    itemProperties = getItemPropertiesToEdit(itemProperties, lName, iPosition);
+                    break;
+            }
+
+            showCurrFrag(itemProperties, currentFragment);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return itemProperties;
+    }
+
+    private ArrayList<String> getItemPropertiesToEdit(ArrayList<String> list, String lName, int iPos) {
+        cursor = db.query(lName + AddItemsActivity.REST_OF_TABLE_NAME,
+                new String[] {"ITEM_CHECKED", "ITEM_PRICE", "ITEM_COUNT", "ITEM_UNIT", "ITEM_COMMENT"},
+                "_id = ?",
+                new String[] {String.valueOf(iPos)}, null, null, null);
+        if (cursor.moveToFirst()) {
+            list = new ArrayList<String>();
+            list.add(0, String.valueOf(cursor.getInt(0)));
+            list.add(1, String.valueOf(cursor.getDouble(1)));
+            list.add(2, String.valueOf(cursor.getDouble(2)));
+            list.add(3, cursor.getString(3));
+            list.add(4, cursor.getString(4));
+
+            Toast.makeText(getApplication(), "pobrano dane przedmiotu", Toast.LENGTH_SHORT)
+                    .show();
+        } else {
+            Toast.makeText(getApplication(), "nie pobrano danych przedmiotu", Toast.LENGTH_SHORT)
+                    .show();
+        }
+        return list;
+    }
+
+    private ArrayList<String> getItemPropertiesToShow(ArrayList<String> list, String lName, int iPos) {
+        cursor = db.query(lName + AddItemsActivity.REST_OF_TABLE_NAME,
+                new String[] {"ITEM_PRICE", "ITEM_COUNT", "ITEM_UNIT", "ITEM_COMMENT"},
+                "_id = ?",
+                new String[] {String.valueOf(iPos)}, null, null, null);
+        if (cursor.moveToFirst()) {
+            list = new ArrayList<String>();
+            list.add(0, String.valueOf(cursor.getDouble(0)));
+            list.add(1, String.valueOf(cursor.getDouble(1)));
+            list.add(2, cursor.getString(2));
+            list.add(3, cursor.getString(3));
+
+            Toast.makeText(getApplication(), "pobrano dane przedmiotu", Toast.LENGTH_SHORT)
+                    .show();
+        } else {
+            Toast.makeText(getApplication(), "nie pobrano danych przedmiotu", Toast.LENGTH_SHORT)
+                    .show();
+        }
+        return list;
+    }
+
+    private void showCurrFrag(ArrayList<String> properties, int cFrag) {
         Fragment fragment;
+        Bundle args = new Bundle();
+        args.putStringArrayList(FRAGMENT_PROP, properties);
         switch (cFrag) {
             case ITEM_INFO_FRAGMENT:
                 fragment = new ItemInfoFragment();
+                fragment.setArguments(args);
                 runFragment(fragment);
                 break;
             case EDIT_ITEM_FRAGMENT:
                 fragment = new EditItemFragment();
+                fragment.setArguments(args);
                 runFragment(fragment);
                 break;
         }
@@ -139,62 +212,4 @@ public class EditItemActivity extends AppCompatActivity {
                 .commit();
     }
 
-    private ItemProperties workOnDb(String lName, int currentFragment, int iPosition) {
-        ItemProperties itemProperties = null;
-        try {
-            openHelper = new ListDatabaseHelper(this);
-            db = openHelper.getWritableDatabase();
-
-            switch (currentFragment) {
-                case ITEM_INFO_FRAGMENT:
-                    itemProperties = getItemPropertiesShow(itemProperties, lName, iPosition);
-                    Toast.makeText(getApplication(), "HALO?!!!!", Toast.LENGTH_SHORT)
-                            .show();
-                    break;
-                case EDIT_ITEM_FRAGMENT:
-                    itemProperties = getItemPropertiesEdit(itemProperties, lName, iPosition);
-                    break;
-            }
-
-            showCurrFrag(itemProperties, currentFragment);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return itemProperties;
-    }
-
-    private ItemProperties getItemPropertiesEdit(ItemProperties ipObj, String lName, int iPos) {
-        cursor = db.query(lName + AddItemsActivity.REST_OF_TABLE_NAME,
-                new String[] {"ITEM_CHECKED", "ITEM_PRICE", "ITEM_COUNT", "ITEM_UNIT", "ITEM_COMMENT"},
-                "_id = ?",
-                new String[] {String.valueOf(iPos)}, null, null, null);
-        if (cursor.moveToFirst()) {
-            ipObj = new ItemProperties(cursor.getInt(0), cursor.getDouble(1), cursor.getDouble(2),
-                    cursor.getString(3), "comm");
-            Toast.makeText(getApplication(), "pobrano dane przedmiotu", Toast.LENGTH_SHORT)
-                    .show();
-        } else {
-            Toast.makeText(getApplication(), "nie pobrano danych przedmiotu", Toast.LENGTH_SHORT)
-                    .show();
-        }
-        return ipObj;
-    }
-
-    private ItemProperties getItemPropertiesShow(ItemProperties ipObj, String lName, int iPos) {
-        cursor = db.query(lName + AddItemsActivity.REST_OF_TABLE_NAME,
-                new String[] {"ITEM_PRICE", "ITEM_COUNT", "ITEM_UNIT", "ITEM_COMMENT"},
-                "_id = ?",
-                new String[] {String.valueOf(iPos)}, null, null, null);
-        if (cursor.moveToFirst()) {
-            ipObj = new ItemProperties(cursor.getDouble(0), cursor.getDouble(1),
-                    cursor.getString(2), "comm");
-            Toast.makeText(getApplication(), "pobrano dane przedmiotu", Toast.LENGTH_SHORT)
-                    .show();
-        } else {
-            Toast.makeText(getApplication(), "nie pobrano danych przedmiotu", Toast.LENGTH_SHORT)
-                    .show();
-        }
-        return ipObj;
-    }
 }
