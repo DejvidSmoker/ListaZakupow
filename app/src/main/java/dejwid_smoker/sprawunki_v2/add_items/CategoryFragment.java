@@ -40,7 +40,6 @@ public class CategoryFragment extends ListFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-
         try {
             listener = (CategoryFragment.OnItemCategoryClicked) activity;
         } catch (ClassCastException e) {

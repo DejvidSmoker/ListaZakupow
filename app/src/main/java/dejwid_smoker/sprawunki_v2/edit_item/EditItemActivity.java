@@ -1,5 +1,6 @@
 package dejwid_smoker.sprawunki_v2.edit_item;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -7,14 +8,16 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import dejwid_smoker.sprawunki_v2.R;
@@ -31,7 +34,11 @@ public class EditItemActivity extends AppCompatActivity {
     private static final int EDIT_ITEM_FRAGMENT = 1;
     private static final String VISIBLE_EDIT_FRAGMENT = "visible_edit_fragment";
     private static final String CURRENT_EDIT_FRAGMENT = "current_edit_fragment";
+    private static final boolean SHOW_BACK_TO_PARENT = true;
+    private static final boolean HIDE_BACK_TO_PARENT = false;
 
+    private FloatingActionButton fabSaveEdited;
+    private FloatingActionButton fabGoToEdit;
     private String listName;
     private String itemName;
     private int itemPosOnList;
@@ -60,6 +67,25 @@ public class EditItemActivity extends AppCompatActivity {
         itemName = intent.getExtras().getString(ShowItemsFragment.ITEM_NAME);
         itemPosOnList = intent.getExtras().getInt(ShowItemsFragment.ITEM_POSITION);
 
+        fabGoToEdit = (FloatingActionButton) findViewById(R.id.fab_edit_item);
+        fabGoToEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Snackbar.make(view, listName + " pos: " + itemPosOnList, Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+                workOnDb(listName, EDIT_ITEM_FRAGMENT, itemPosOnList);
+            }
+        });
+
+        fabSaveEdited = (FloatingActionButton) findViewById(R.id.fab_save_edit_item);
+        fabSaveEdited.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveToDb();
+                workOnDb(listName, currentFragment, itemPosOnList);
+            }
+        });
+
         getSupportFragmentManager().addOnBackStackChangedListener(
                 new FragmentManager.OnBackStackChangedListener() {
             @Override
@@ -68,40 +94,47 @@ public class EditItemActivity extends AppCompatActivity {
                 Fragment fragment = fm.findFragmentByTag(VISIBLE_EDIT_FRAGMENT);
                 if (fragment instanceof ItemInfoFragment) {
                     currentFragment = ITEM_INFO_FRAGMENT;
-                    setToolbarToEachFrag(itemName, true);
+                    setToolbarToEachFrag(itemName, SHOW_BACK_TO_PARENT);
+                    setFab(currentFragment);
                 }
                 if (fragment instanceof EditItemFragment) {
                     currentFragment = EDIT_ITEM_FRAGMENT;
-                    setToolbarToEachFrag(itemName, false);
+                    setToolbarToEachFrag(itemName, HIDE_BACK_TO_PARENT);
+                    setFab(currentFragment);
                 }
             }
         });
 
-//        price = (EditText) findViewById(R.id.set_price);
-//        count = (EditText) findViewById(R.id.set_count);
-//        comment = (EditText) findViewById(R.id.set_comment);
-//        unit = (AppCompatSpinner) findViewById(R.id.set_unit);
-//        gotIt = (Switch) findViewById(R.id.set_gotit);
-//
-//        price.setText("2.99", TextView.BufferType.EDITABLE);
-
-        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_edit_item);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, listName + " pos: " + itemPosOnList, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                workOnDb(listName, 1, itemPosOnList);
-            }
-        });
 
         workOnDb(listName, currentFragment, itemPosOnList);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (currentFragment == ITEM_INFO_FRAGMENT) {
+            setFab(ITEM_INFO_FRAGMENT);
+        }
+        Toast.makeText(getApplication(), "BACK", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
         super.onSaveInstanceState(outState, outPersistentState);
         outState.putInt(CURRENT_EDIT_FRAGMENT, currentFragment);
+    }
+
+    private void setFab(int currFrag) {
+        CoordinatorLayout.LayoutParams p = (CoordinatorLayout.LayoutParams) fabSaveEdited.getLayoutParams();
+        fabSaveEdited.setLayoutParams(p);
+        fabGoToEdit.setLayoutParams(p);
+        if (currFrag == ITEM_INFO_FRAGMENT) {
+            fabGoToEdit.setVisibility(View.VISIBLE);
+            fabSaveEdited.setVisibility(View.GONE);
+        } else {
+            fabGoToEdit.setVisibility(View.GONE);
+            fabSaveEdited.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setToolbarToEachFrag(String title, boolean homeEnabled) {
@@ -118,10 +151,10 @@ public class EditItemActivity extends AppCompatActivity {
 
             switch (currentFragment) {
                 case ITEM_INFO_FRAGMENT:
-                    itemProperties = getItemPropertiesToEdit(itemProperties, lName, iPosition);
+                    itemProperties = getItemProperties(itemProperties, lName, iPosition);
                     break;
                 case EDIT_ITEM_FRAGMENT:
-                    itemProperties = getItemPropertiesToEdit(itemProperties, lName, iPosition);
+                    itemProperties = getItemProperties(itemProperties, lName, iPosition);
                     break;
             }
 
@@ -133,7 +166,36 @@ public class EditItemActivity extends AppCompatActivity {
         return itemProperties;
     }
 
-    private ItemProperties getItemPropertiesToEdit(ItemProperties properties,
+    private void saveToDb() {
+        Switch itemChecked = (Switch) findViewById(R.id.set_gotit);
+        EditText itemPrice = (EditText) findViewById(R.id.set_price);
+        EditText itemCount = (EditText) findViewById(R.id.set_count);
+        EditText itemComment = (EditText) findViewById(R.id.set_comment);
+
+        int checkSwitch = 0;
+        if (itemChecked.isChecked()) { checkSwitch = 1; }
+
+        try {
+            ContentValues contentValues = new ContentValues();
+
+            contentValues.put("ITEM_CHECKED", checkSwitch);
+            contentValues.put("ITEM_PRICE", Double.parseDouble(String.valueOf(itemPrice.getText())));
+            contentValues.put("ITEM_COUNT", Double.parseDouble(String.valueOf(itemCount.getText())));
+//            SPINNNNNNER
+//            contentValues.put("ITEM_UNIT", );
+            contentValues.put("ITEM_COMMENT", String.valueOf(itemComment.getText()));
+
+            db.update(listName + AddItemsActivity.REST_OF_TABLE_NAME,
+                    contentValues,
+                    "_id = ?",
+                    new String[] {String.valueOf(itemPosOnList + 1)});
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private ItemProperties getItemProperties(ItemProperties properties,
                                                    String lName,
                                                    int iPos) {
         cursor = db.query(lName + AddItemsActivity.REST_OF_TABLE_NAME,
@@ -155,27 +217,6 @@ public class EditItemActivity extends AppCompatActivity {
         }
         return properties;
     }
-//
-//    private ArrayList<String> getItemPropertiesToShow(ArrayList<String> list, String lName, int iPos) {
-//        cursor = db.query(lName + AddItemsActivity.REST_OF_TABLE_NAME,
-//                new String[] {"ITEM_PRICE", "ITEM_COUNT", "ITEM_UNIT", "ITEM_COMMENT"},
-//                "_id = ?",
-//                new String[] {String.valueOf(iPos)}, null, null, null);
-//        if (cursor.moveToFirst()) {
-//            list = new ArrayList<String>();
-//            list.add(0, String.valueOf(cursor.getDouble(0)));
-//            list.add(1, String.valueOf(cursor.getDouble(1)));
-//            list.add(2, cursor.getString(2));
-//            list.add(3, cursor.getString(3));
-//
-//            Toast.makeText(getApplication(), "pobrano dane przedmiotu", Toast.LENGTH_SHORT)
-//                    .show();
-//        } else {
-//            Toast.makeText(getApplication(), "nie pobrano danych przedmiotu", Toast.LENGTH_SHORT)
-//                    .show();
-//        }
-//        return list;
-//    }
 
     private void showCurrFrag(ItemProperties properties, int cFrag) {
         Fragment fragment;

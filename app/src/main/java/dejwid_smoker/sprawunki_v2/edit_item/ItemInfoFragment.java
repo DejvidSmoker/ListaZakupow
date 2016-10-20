@@ -40,7 +40,7 @@ public class ItemInfoFragment extends Fragment {
 
             price.setText(String.valueOf(itemProperties.getItemPrice()));
             count.setText(String.valueOf(itemProperties.getItemCount()));
-            unit.setText(itemProperties.getItemUnit());
+            unit.setText(String.valueOf(itemProperties.getItemUnit()));
             comment.setText(itemProperties.getItemComment());
         }
 

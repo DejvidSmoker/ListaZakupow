@@ -6,7 +6,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -132,10 +131,6 @@ public class AddItemsActivity extends AppCompatActivity
         });
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
-    }
 
     @Override
     public void onCategoryListClick(int position) {
@@ -218,6 +213,14 @@ public class AddItemsActivity extends AppCompatActivity
         }
     }
 
+    private void runFragment(Fragment fragment) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_add_item, fragment, VISIBLE_FRAGMENT)
+                .addToBackStack(null)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .commit();
+    }
+
     private void addNewItemToDb(String justAdded) {
         try {
             ContentValues contentValues = new ContentValues();
@@ -237,14 +240,4 @@ public class AddItemsActivity extends AppCompatActivity
             e.printStackTrace();
         }
     }
-
-
-    private void runFragment(Fragment fragment) {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.content_add_item, fragment, VISIBLE_FRAGMENT)
-                .addToBackStack(null)
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .commit();
-    }
-
 }
