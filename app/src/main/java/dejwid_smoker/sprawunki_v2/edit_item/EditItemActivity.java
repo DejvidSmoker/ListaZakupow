@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Switch;
@@ -24,11 +25,12 @@ import dejwid_smoker.sprawunki_v2.R;
 import dejwid_smoker.sprawunki_v2.add_items.AddItemsActivity;
 import dejwid_smoker.sprawunki_v2.add_items.ShowItemsFragment;
 import dejwid_smoker.sprawunki_v2.database.ListDatabaseHelper;
+import dejwid_smoker.sprawunki_v2.fragments_main.AddListFragment;
 import dejwid_smoker.sprawunki_v2.pojo.ItemProperties;
 
-public class EditItemActivity extends AppCompatActivity {
+public class EditItemActivity extends AppCompatActivity
+        implements EditItemFragment.OnSelectUnitClicked {
 
-    public static final String ITEM_PROPERTIES = "item_properties";
     public static final String FRAGMENT_PROP = "frag_prop";
     private static final int ITEM_INFO_FRAGMENT = 0;
     private static final int EDIT_ITEM_FRAGMENT = 1;
@@ -43,6 +45,7 @@ public class EditItemActivity extends AppCompatActivity {
     private String itemName;
     private int itemPosOnList;
     private int currentFragment;
+    private int spinnersChoice;
     private Toolbar toolbar;
     private SQLiteDatabase db;
     private SQLiteOpenHelper openHelper;
@@ -71,8 +74,6 @@ public class EditItemActivity extends AppCompatActivity {
         fabGoToEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Snackbar.make(view, listName + " pos: " + itemPosOnList, Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
                 workOnDb(listName, EDIT_ITEM_FRAGMENT, itemPosOnList);
             }
         });
@@ -110,10 +111,22 @@ public class EditItemActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                backToParentList();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
         if (currentFragment == ITEM_INFO_FRAGMENT) {
             setFab(ITEM_INFO_FRAGMENT);
+            backToParentList();
         }
         Toast.makeText(getApplication(), "BACK", Toast.LENGTH_SHORT).show();
     }
@@ -181,8 +194,7 @@ public class EditItemActivity extends AppCompatActivity {
             contentValues.put("ITEM_CHECKED", checkSwitch);
             contentValues.put("ITEM_PRICE", Double.parseDouble(String.valueOf(itemPrice.getText())));
             contentValues.put("ITEM_COUNT", Double.parseDouble(String.valueOf(itemCount.getText())));
-//            SPINNNNNNER
-//            contentValues.put("ITEM_UNIT", );
+            contentValues.put("ITEM_UNIT", spinnersChoice);
             contentValues.put("ITEM_COMMENT", String.valueOf(itemComment.getText()));
 
             db.update(listName + AddItemsActivity.REST_OF_TABLE_NAME,
@@ -206,11 +218,8 @@ public class EditItemActivity extends AppCompatActivity {
 
         if (cursor.moveToFirst()) {
             properties = new ItemProperties(cursor.getString(0), cursor.getInt(1),
-                    cursor.getDouble(2), cursor.getDouble(3), cursor.getString(4),
+                    cursor.getDouble(2), cursor.getDouble(3), cursor.getInt(4),
                     cursor.getString(5));
-
-            Toast.makeText(getApplication(), "pobrano dane przedmiotu", Toast.LENGTH_SHORT)
-                    .show();
         } else {
             Toast.makeText(getApplication(), "nie pobrano danych przedmiotu", Toast.LENGTH_SHORT)
                     .show();
@@ -244,4 +253,15 @@ public class EditItemActivity extends AppCompatActivity {
                 .commit();
     }
 
+    @Override
+    public void onSelectUnitClicked(int posOnUnitList) {
+        spinnersChoice = posOnUnitList;
+    }
+
+    private void backToParentList() {
+        Intent intent = new Intent(this, AddItemsActivity.class);
+        intent.putExtra(AddListFragment.LIST_NAME, listName);
+        intent.putExtra(AddListFragment.NEW_LIST_NAME, false);
+        startActivity(intent);
+    }
 }

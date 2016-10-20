@@ -1,6 +1,7 @@
 package dejwid_smoker.sprawunki_v2.edit_item;
 
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -21,28 +22,25 @@ import dejwid_smoker.sprawunki_v2.pojo.ItemProperties;
  */
 public class EditItemFragment extends Fragment {
 
-//    public interface OnSaveItemClicked {
-//        public void onSaveItemClick(ItemProperties properties);
-//    }
-//
-//    private OnSaveItemClicked listener;
-    private String spinnerChoice;
-
-    public EditItemFragment() {
-        // Required empty public constructor
+    public interface OnSelectUnitClicked {
+        public void onSelectUnitClicked(int posOnUnitList);
     }
 
-//    @SuppressWarnings("deprecation")
-//    @Override
-//    public void onAttach(Activity activity) {
-//        super.onAttach(activity);
-//        try {
-//            listener = (EditItemFragment.OnSaveItemClicked) activity;
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(activity.toString()
-//                    + " must implement OnItemCategoryClicked");
-//        }
-//    }
+    private OnSelectUnitClicked listener;
+
+    public EditItemFragment() { }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            listener = (EditItemFragment.OnSelectUnitClicked) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnSelectUnitClicked");
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,12 +66,12 @@ public class EditItemFragment extends Fragment {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position,
                                            long id) {
-                    spinnerChoice = String.valueOf(parent.getItemAtPosition(position));
                     itemUnit.setSelection(position);
+                    listener.onSelectUnitClicked(position);
                 }
 
                 @Override
-                public void onNothingSelected(AdapterView<?> parent) {}
+                public void onNothingSelected(AdapterView<?> parent) { }
             });
 
             if (itemProperties.getItemChecked() == 1) {

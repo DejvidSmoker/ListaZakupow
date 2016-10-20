@@ -205,7 +205,7 @@ public class AddItemsActivity extends AppCompatActivity
                     + "ITEM_CHECKED INTEGER, "
                     + "ITEM_PRICE REAL, "
                     + "ITEM_COUNT REAL, "
-                    + "ITEM_UNIT TEXT, "
+                    + "ITEM_UNIT INTEGER, "
                     + "ITEM_COMMENT TEXT); ");
 
         } catch (SQLException e) {
