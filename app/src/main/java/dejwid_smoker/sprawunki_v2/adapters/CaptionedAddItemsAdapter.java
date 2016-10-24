@@ -7,16 +7,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 
 import dejwid_smoker.sprawunki_v2.R;
+import dejwid_smoker.sprawunki_v2.pojo.ItemProperties;
 
 public class CaptionedAddItemsAdapter extends
         RecyclerView.Adapter<CaptionedAddItemsAdapter.ViewHolder> {
 
     private Listener listener;
-    private ArrayList<String> items;
+    private ArrayList<ItemProperties> items;
 
     public static interface Listener {
         public void onClick(int position, String name);
@@ -34,7 +36,7 @@ public class CaptionedAddItemsAdapter extends
 
     }
 
-    public CaptionedAddItemsAdapter(ArrayList<String> name) {
+    public CaptionedAddItemsAdapter(ArrayList<ItemProperties> name) {
         this.items = name;
     }
 
@@ -55,27 +57,31 @@ public class CaptionedAddItemsAdapter extends
         CardView cardView = holder.cardView;
 
         final ImageView delete = (ImageView) cardView.findViewById(R.id.delete_card_view_add_items);
-//        final ImageView gotIt = (ImageView) cardView.findViewById(R.id.set_gotit_card_view_add_items);
         final TextView itemName = (TextView) cardView.findViewById(R.id.text_card_add_items);
+        final ToggleButton gotIt =
+                (ToggleButton) cardView.findViewById(R.id.set_gotit_card_view_add_items);
 
-        itemName.setText(items.get(position));
+        itemName.setText(items.get(position).getItemName());
         itemName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 itemName.setBackgroundResource(R.color.item_clicked);
                 delete.setBackgroundResource(R.color.item_clicked);
-                listener.onClick(position, items.get(position));
+                listener.onClick(position, items.get(position).getItemName());
             }
         });
 
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onClickDelete(position, items.get(position));
+                listener.onClickDelete(position, items.get(position).getItemName());
             }
         });
 
-//        gotIt.setOnClickListener();
+        final int check = items.get(position).getItemChecked();
+
+        gotIt.setChecked(checkGotIt(check));
+
     }
 
     @Override
@@ -83,5 +89,11 @@ public class CaptionedAddItemsAdapter extends
         return items.size();
     }
 
-
+    private boolean checkGotIt(int check) {
+        if (check == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }

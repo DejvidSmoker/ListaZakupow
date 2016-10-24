@@ -19,6 +19,7 @@ import dejwid_smoker.sprawunki_v2.R;
 import dejwid_smoker.sprawunki_v2.activities.EditItemActivity;
 import dejwid_smoker.sprawunki_v2.adapters.CaptionedAddItemsAdapter;
 import dejwid_smoker.sprawunki_v2.database.ListDatabaseHelper;
+import dejwid_smoker.sprawunki_v2.pojo.ItemProperties;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -30,7 +31,7 @@ public class ShowItemsFragment extends Fragment {
     public static final String ITEM_POSITION = "item_position";
     public static final String ITEM_NAME = "item_name";
 
-    private ArrayList<String> items;
+    private ArrayList<ItemProperties> items;
     private String currentListName;
 
     public ShowItemsFragment() { }
@@ -45,7 +46,7 @@ public class ShowItemsFragment extends Fragment {
 
         Bundle args = getArguments();
         if (args != null) {
-            items = args.getStringArrayList(ITEMS_ARRAY);
+            items = args.getParcelableArrayList(ITEMS_ARRAY);
             currentListName = args.getString(CURRENT_NAME_LIST);
 
             CaptionedAddItemsAdapter adapter = new CaptionedAddItemsAdapter(items);
