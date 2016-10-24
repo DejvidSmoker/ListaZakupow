@@ -83,7 +83,8 @@ public class EditItemActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 saveToDb();
-                workOnDb(listName, currentFragment, itemPosOnList);
+                backToParentList();
+//                workOnDb(listName, currentFragment, itemPosOnList);
             }
         });
 
@@ -113,7 +114,6 @@ public class EditItemActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
             case android.R.id.home:
                 backToParentList();
                 return true;
@@ -123,11 +123,11 @@ public class EditItemActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         if (currentFragment == ITEM_INFO_FRAGMENT) {
             setFab(ITEM_INFO_FRAGMENT);
             backToParentList();
         }
+        super.onBackPressed();
         Toast.makeText(getApplication(), "BACK", Toast.LENGTH_SHORT).show();
     }
 
