@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 import dejwid_smoker.sprawunki_v2.R;
 import dejwid_smoker.sprawunki_v2.activities.AddItemsActivity;
+import dejwid_smoker.sprawunki_v2.adapters.CaptionedMainAdapter;
 import dejwid_smoker.sprawunki_v2.database.ListDatabaseHelper;
 
 /**

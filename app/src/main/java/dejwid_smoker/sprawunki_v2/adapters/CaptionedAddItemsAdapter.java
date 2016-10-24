@@ -1,4 +1,4 @@
-package dejwid_smoker.sprawunki_v2.fragments_main;
+package dejwid_smoker.sprawunki_v2.adapters;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -12,14 +12,11 @@ import java.util.ArrayList;
 
 import dejwid_smoker.sprawunki_v2.R;
 
-/**
- * Created by Dawid on 2016-10-05.
- */
-
-public class CaptionedMainAdapter extends RecyclerView.Adapter<CaptionedMainAdapter.ViewHolder> {
+public class CaptionedAddItemsAdapter extends
+        RecyclerView.Adapter<CaptionedAddItemsAdapter.ViewHolder> {
 
     private Listener listener;
-    private ArrayList<String> names;
+    private ArrayList<String> items;
 
     public static interface Listener {
         public void onClick(int position, String name);
@@ -37,8 +34,8 @@ public class CaptionedMainAdapter extends RecyclerView.Adapter<CaptionedMainAdap
 
     }
 
-    public CaptionedMainAdapter(ArrayList<String> name) {
-        this.names = name;
+    public CaptionedAddItemsAdapter(ArrayList<String> name) {
+        this.items = name;
     }
 
     public void setListener(Listener listener) {
@@ -49,7 +46,7 @@ public class CaptionedMainAdapter extends RecyclerView.Adapter<CaptionedMainAdap
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CardView cv = (CardView) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.card_captioned_main, parent, false);
+                .inflate(R.layout.card_captioned_add_items, parent, false);
         return new ViewHolder(cv);
     }
 
@@ -57,30 +54,33 @@ public class CaptionedMainAdapter extends RecyclerView.Adapter<CaptionedMainAdap
     public void onBindViewHolder(ViewHolder holder, final int position) {
         CardView cardView = holder.cardView;
 
-        ImageView imageView = (ImageView) cardView.findViewById(R.id.delete_card_view_main);
-        TextView textView = (TextView) cardView.findViewById(R.id.text_card_main);
-//        CheckBox checkBox = (CheckBox) cardView.findViewById(R.id.checkbox_card_main);
+        final ImageView delete = (ImageView) cardView.findViewById(R.id.delete_card_view_add_items);
+//        final ImageView gotIt = (ImageView) cardView.findViewById(R.id.set_gotit_card_view_add_items);
+        final TextView itemName = (TextView) cardView.findViewById(R.id.text_card_add_items);
 
-        textView.setText(names.get(position));
-
-        textView.setOnClickListener(new View.OnClickListener() {
+        itemName.setText(items.get(position));
+        itemName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onClick(position, names.get(position));
+                itemName.setBackgroundResource(R.color.item_clicked);
+                delete.setBackgroundResource(R.color.item_clicked);
+                listener.onClick(position, items.get(position));
             }
         });
 
-        imageView.setOnClickListener(new View.OnClickListener() {
+        delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onClickDelete(position, names.get(position));
+                listener.onClickDelete(position, items.get(position));
             }
         });
+
+//        gotIt.setOnClickListener();
     }
 
     @Override
     public int getItemCount() {
-        return names.size();
+        return items.size();
     }
 
 

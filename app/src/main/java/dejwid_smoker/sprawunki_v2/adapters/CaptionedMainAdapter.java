@@ -1,4 +1,4 @@
-package dejwid_smoker.sprawunki_v2.fragments_add_items;
+package dejwid_smoker.sprawunki_v2.adapters;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -12,11 +12,14 @@ import java.util.ArrayList;
 
 import dejwid_smoker.sprawunki_v2.R;
 
-public class CaptionedAddItemsAdapter extends
-        RecyclerView.Adapter<CaptionedAddItemsAdapter.ViewHolder> {
+/**
+ * Created by Dawid on 2016-10-05.
+ */
+
+public class CaptionedMainAdapter extends RecyclerView.Adapter<CaptionedMainAdapter.ViewHolder> {
 
     private Listener listener;
-    private ArrayList<String> items;
+    private ArrayList<String> names;
 
     public static interface Listener {
         public void onClick(int position, String name);
@@ -34,8 +37,8 @@ public class CaptionedAddItemsAdapter extends
 
     }
 
-    public CaptionedAddItemsAdapter(ArrayList<String> name) {
-        this.items = name;
+    public CaptionedMainAdapter(ArrayList<String> name) {
+        this.names = name;
     }
 
     public void setListener(Listener listener) {
@@ -46,7 +49,7 @@ public class CaptionedAddItemsAdapter extends
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CardView cv = (CardView) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.card_captioned_add_items, parent, false);
+                .inflate(R.layout.card_captioned_main, parent, false);
         return new ViewHolder(cv);
     }
 
@@ -54,30 +57,29 @@ public class CaptionedAddItemsAdapter extends
     public void onBindViewHolder(ViewHolder holder, final int position) {
         CardView cardView = holder.cardView;
 
-        final ImageView imageView = (ImageView) cardView.findViewById(R.id.delete_card_view_add_items);
-        final TextView textView = (TextView) cardView.findViewById(R.id.text_card_add_items);
+        ImageView imageView = (ImageView) cardView.findViewById(R.id.delete_card_view_main);
+        TextView textView = (TextView) cardView.findViewById(R.id.text_card_main);
 
-        textView.setText(items.get(position));
+        textView.setText(names.get(position));
+
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                textView.setBackgroundResource(R.color.item_clicked);
-                imageView.setBackgroundResource(R.color.item_clicked);
-                listener.onClick(position, items.get(position));
+                listener.onClick(position, names.get(position));
             }
         });
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onClickDelete(position, items.get(position));
+                listener.onClickDelete(position, names.get(position));
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return items.size();
+        return names.size();
     }
 
 
