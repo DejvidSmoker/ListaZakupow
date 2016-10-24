@@ -33,6 +33,9 @@
     <string name="check_price">Cena:</string>
     <string name="check_count">Ilość:</string>
     <string name="check_comment">Uwagi:</string>
+    <string name="ask_to_exit">Czy chcesz wyłączyć aplikację?</string>
+    <string name="exit_yes">Tak</string>
+    <string name="exit_no">Jeszcze nie</string>
 
 
 </resources>

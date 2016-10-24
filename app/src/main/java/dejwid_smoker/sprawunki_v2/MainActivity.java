@@ -5,12 +5,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PersistableBundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -31,8 +34,8 @@ import dejwid_smoker.sprawunki_v2.fragments_main.ListsFragment;
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener {
 
-//    testcomment
     private static final int DRAWER_CLOSE_DELAY = 300;
+    private static final String VISIBLE_MAIN_FRAGMENT = "visible_main_fragment";
     private static final String NAV_ITEM_ID = "nav_item_id";
 
     private final Handler drawerActionHandler = new Handler();
@@ -67,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().findItem(navItemId).setChecked(true);
 
-        //wywolanie fragmenu biezacego
         drawerNavigation(navItemId);
     }
 
@@ -77,11 +79,17 @@ public class MainActivity extends AppCompatActivity implements
         outState.putInt(NAV_ITEM_ID, navItemId);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment fragment = fm.findFragmentByTag(VISIBLE_MAIN_FRAGMENT);
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+        } else if (fragment instanceof ListsFragment) {
+            this.finishAffinity();
         } else {
             super.onBackPressed();
         }
@@ -121,7 +129,6 @@ public class MainActivity extends AppCompatActivity implements
         return true;
     }
 
-    //drawer navigation
     private void drawerNavigation(final int id) {
         switch (id) {
             case R.id.nav_lists:
@@ -144,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private void runFragment(Fragment fragment) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.content_main, fragment)
+        ft.replace(R.id.content_main, fragment, VISIBLE_MAIN_FRAGMENT)
                 .addToBackStack(null)
                 .commit();
     }
@@ -157,10 +164,8 @@ public class MainActivity extends AppCompatActivity implements
         }
         ft.addToBackStack(null);
 
-        // Create and show the dialog.
         DialogFragment newFragment = new AddListFragment();
         newFragment.show(ft, getResources().getString(R.string.dialog_add));
-
     }
 
     private void showListsFragment() {
