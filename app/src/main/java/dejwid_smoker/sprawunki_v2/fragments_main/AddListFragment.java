@@ -14,7 +14,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 
 import dejwid_smoker.sprawunki_v2.R;
-import dejwid_smoker.sprawunki_v2.add_items.AddItemsActivity;
+import dejwid_smoker.sprawunki_v2.activities.AddItemsActivity;
 
 
 public class AddListFragment extends DialogFragment {

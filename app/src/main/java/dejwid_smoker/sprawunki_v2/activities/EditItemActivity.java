@@ -1,4 +1,4 @@
-package dejwid_smoker.sprawunki_v2.edit_item;
+package dejwid_smoker.sprawunki_v2.activities;
 
 import android.content.ContentValues;
 import android.content.Intent;
@@ -22,9 +22,10 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import dejwid_smoker.sprawunki_v2.R;
-import dejwid_smoker.sprawunki_v2.add_items.AddItemsActivity;
-import dejwid_smoker.sprawunki_v2.add_items.ShowItemsFragment;
+import dejwid_smoker.sprawunki_v2.fragments_add_items.ShowItemsFragment;
 import dejwid_smoker.sprawunki_v2.database.ListDatabaseHelper;
+import dejwid_smoker.sprawunki_v2.fragments_edit_item.EditItemFragment;
+import dejwid_smoker.sprawunki_v2.fragments_edit_item.ItemInfoFragment;
 import dejwid_smoker.sprawunki_v2.fragments_main.AddListFragment;
 import dejwid_smoker.sprawunki_v2.pojo.ItemProperties;
 

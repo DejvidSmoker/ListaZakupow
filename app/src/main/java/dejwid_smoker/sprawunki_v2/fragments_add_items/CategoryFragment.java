@@ -1,4 +1,4 @@
-package dejwid_smoker.sprawunki_v2.add_items;
+package dejwid_smoker.sprawunki_v2.fragments_add_items;
 
 
 import android.app.Activity;

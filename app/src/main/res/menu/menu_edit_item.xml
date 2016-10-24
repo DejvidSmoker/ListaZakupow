@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="dejwid_smoker.sprawunki_v2.edit_item.EditItemActivity">
+    tools:context="dejwid_smoker.sprawunki_v2.activities.EditItemActivity">
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

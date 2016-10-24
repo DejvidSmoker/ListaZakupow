@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="dejwid_smoker.sprawunki_v2.edit_item.ItemInfoFragment">
+    tools:context="dejwid_smoker.sprawunki_v2.fragments_edit_item.ItemInfoFragment">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"

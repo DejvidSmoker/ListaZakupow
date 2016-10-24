@@ -1,4 +1,4 @@
-package dejwid_smoker.sprawunki_v2.edit_item;
+package dejwid_smoker.sprawunki_v2.fragments_edit_item;
 
 
 import android.app.Activity;
@@ -15,6 +15,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import dejwid_smoker.sprawunki_v2.R;
+import dejwid_smoker.sprawunki_v2.activities.EditItemActivity;
 import dejwid_smoker.sprawunki_v2.pojo.ItemProperties;
 
 /**

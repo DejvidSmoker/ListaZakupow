@@ -1,4 +1,4 @@
-package dejwid_smoker.sprawunki_v2.add_items;
+package dejwid_smoker.sprawunki_v2.fragments_add_items;
 
 import android.content.Intent;
 import android.database.SQLException;
@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import dejwid_smoker.sprawunki_v2.R;
-import dejwid_smoker.sprawunki_v2.edit_item.EditItemActivity;
+import dejwid_smoker.sprawunki_v2.activities.EditItemActivity;
 import dejwid_smoker.sprawunki_v2.database.ListDatabaseHelper;
 
 /**

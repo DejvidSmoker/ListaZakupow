@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="dejwid_smoker.sprawunki_v2.edit_item.EditItemActivity">
+    tools:context="dejwid_smoker.sprawunki_v2.activities.EditItemActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_edit_item"
@@ -39,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context="dejwid_smoker.sprawunki_v2.edit_item.EditItemActivity"
+        tools:context="dejwid_smoker.sprawunki_v2.activities.EditItemActivity"
         tools:showIn="@layout/activity_edit_item">
 
         <FrameLayout

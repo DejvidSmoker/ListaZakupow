@@ -1,4 +1,4 @@
-package dejwid_smoker.sprawunki_v2.add_items;
+package dejwid_smoker.sprawunki_v2.activities;
 
 import android.content.ContentValues;
 import android.content.Intent;
@@ -19,12 +19,15 @@ import java.util.ArrayList;
 
 import dejwid_smoker.sprawunki_v2.MainActivity;
 import dejwid_smoker.sprawunki_v2.R;
+import dejwid_smoker.sprawunki_v2.fragments_add_items.AddItemFragment;
+import dejwid_smoker.sprawunki_v2.fragments_add_items.CategoryFragment;
+import dejwid_smoker.sprawunki_v2.fragments_add_items.ShowItemsFragment;
 import dejwid_smoker.sprawunki_v2.database.ListDatabaseHelper;
 import dejwid_smoker.sprawunki_v2.fragments_main.AddListFragment;
 
 public class AddItemsActivity extends AppCompatActivity
-        implements AddItemFragment.OnListCategoryClicked ,
-                    CategoryFragment.OnItemCategoryClicked,
+        implements AddItemFragment.OnListCategoryClicked,
+        CategoryFragment.OnItemCategoryClicked,
                     AddItemFragment.OnConfirmButtonClicked {
 
     public static final String REST_OF_TABLE_NAME = "_table";

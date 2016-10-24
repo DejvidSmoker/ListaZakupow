@@ -18,7 +18,7 @@
         </intent-filter>
         </activity>
         <activity
-            android:name=".add_items.AddItemsActivity"
+            android:name=".activities.AddItemsActivity"
             android:label="@string/title_activity_add_items"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -28,14 +28,14 @@
         </activity>
         <activity android:name=".activities.PreferencesActivity" />
         <activity
-            android:name=".edit_item.EditItemActivity"
+            android:name=".activities.EditItemActivity"
             android:label="@string/title_activity_edit_item"
-            android:parentActivityName=".add_items.AddItemsActivity"
+            android:parentActivityName=".activities.AddItemsActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="dejwid_smoker.sprawunki_v2.add_items.AddItemsActivity" />
+                android:value="dejwid_smoker.sprawunki_v2.activities.AddItemsActivity" />
         </activity>
     </application>
 

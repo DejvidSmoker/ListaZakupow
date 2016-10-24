@@ -1,4 +1,4 @@
-package dejwid_smoker.sprawunki_v2.add_items;
+package dejwid_smoker.sprawunki_v2.fragments_add_items;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -12,7 +12,8 @@ import java.util.ArrayList;
 
 import dejwid_smoker.sprawunki_v2.R;
 
-public class CaptionedAddItemsAdapter extends RecyclerView.Adapter<CaptionedAddItemsAdapter.ViewHolder> {
+public class CaptionedAddItemsAdapter extends
+        RecyclerView.Adapter<CaptionedAddItemsAdapter.ViewHolder> {
 
     private Listener listener;
     private ArrayList<String> items;
