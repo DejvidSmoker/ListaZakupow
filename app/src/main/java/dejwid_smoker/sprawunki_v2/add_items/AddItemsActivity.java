@@ -1,6 +1,7 @@
 package dejwid_smoker.sprawunki_v2.add_items;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,6 +17,7 @@ import android.view.View;
 
 import java.util.ArrayList;
 
+import dejwid_smoker.sprawunki_v2.MainActivity;
 import dejwid_smoker.sprawunki_v2.R;
 import dejwid_smoker.sprawunki_v2.database.ListDatabaseHelper;
 import dejwid_smoker.sprawunki_v2.fragments_main.AddListFragment;
@@ -88,6 +90,14 @@ public class AddItemsActivity extends AppCompatActivity
 
         showCurrFrag(currentFrag);
         createFabs();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (currentFrag == SHOW_ITEMS_FRAGMENT) {
+            backToParentList();
+        }
+        super.onBackPressed();
     }
 
     private void setToolbarToEachFrag(String title, boolean homeEnabled) {
@@ -239,5 +249,10 @@ public class AddItemsActivity extends AppCompatActivity
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private void backToParentList() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }

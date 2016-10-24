@@ -128,7 +128,6 @@ public class EditItemActivity extends AppCompatActivity
             backToParentList();
         }
         super.onBackPressed();
-        Toast.makeText(getApplication(), "BACK", Toast.LENGTH_SHORT).show();
     }
 
     @Override
