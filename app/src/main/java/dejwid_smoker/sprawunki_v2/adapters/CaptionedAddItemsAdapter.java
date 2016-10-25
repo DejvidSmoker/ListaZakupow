@@ -2,6 +2,7 @@ package dejwid_smoker.sprawunki_v2.adapters;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,7 @@ public class CaptionedAddItemsAdapter extends
     public static interface Listener {
         public void onClick(int position, String name);
         public void onClickDelete(int position, String name);
-        public void onCheckClicked(int position, String name, boolean checked);
+        public void onCheckClicked(int position, String name, int checked, boolean isChecked);
     }
 
 
@@ -85,7 +86,12 @@ public class CaptionedAddItemsAdapter extends
         gotIt.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                listener.onCheckClicked(position, items.get(position).getItemName(), isChecked);
+                listener.onCheckClicked(position,
+                        items.get(position).getItemName(),
+                        checkGotItToInt(isChecked),
+                        isChecked);
+                Log.i("position/name;", position + "/" + items.get(position).getItemName());
+                Log.i("boolean:", String.valueOf(isChecked));
             }
         });
     }
@@ -100,6 +106,13 @@ public class CaptionedAddItemsAdapter extends
             return false;
         } else {
             return true;
+        }
+    }
+    private int checkGotItToInt(boolean check) {
+        if (check) {
+            return 1;
+        } else {
+            return 0;
         }
     }
 }

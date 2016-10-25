@@ -45,7 +45,7 @@ public class ShowItemsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
 
-        RecyclerView recyclerView = (RecyclerView) inflater
+        final RecyclerView recyclerView = (RecyclerView) inflater
                 .inflate(R.layout.fragment_show_items, container, false);
 
 
@@ -54,7 +54,7 @@ public class ShowItemsFragment extends Fragment {
             items = args.getParcelableArrayList(ITEMS_ARRAY);
             currentListName = args.getString(CURRENT_NAME_LIST);
 
-            CaptionedAddItemsAdapter adapter = new CaptionedAddItemsAdapter(items);
+            final CaptionedAddItemsAdapter adapter = new CaptionedAddItemsAdapter(items);
             recyclerView.setAdapter(adapter);
 
             LinearLayoutManager manager = new LinearLayoutManager(getActivity());
@@ -88,8 +88,13 @@ public class ShowItemsFragment extends Fragment {
                 }
 
                 @Override
-                public void onCheckClicked(int position, String name, boolean checked) {
-
+                public void onCheckClicked(int position,
+                                           String name,
+                                           int checked,
+                                           boolean isChecked) {
+                    workOnDb(name, UPDATE_ITEM_CHECK, isChecked);
+                    items.set(position, new ItemProperties(name, checked));
+                    recyclerView.setAdapter(new CaptionedAddItemsAdapter(items));
                 }
             });
 
@@ -108,15 +113,19 @@ public class ShowItemsFragment extends Fragment {
                         new String[]{itemName});
             } else if (whichAction == UPDATE_ITEM_CHECK) {
                 int putToDb;
-                if (justForCheck) putToDb = 1;
-                else putToDb = 0;
+                if (justForCheck) {
+                    putToDb = 1;
+                }
+                else {
+                    putToDb = 0;
+                }
 
                 ContentValues contentValues = new ContentValues();
                 contentValues.put("ITEM_CHECKED", putToDb);
                 db.update(currentListName + AddItemsActivity.REST_OF_TABLE_NAME,
                         contentValues,
                         "ITEM_NAME = ?",
-                        new String[]{String.valueOf(putToDb)});
+                        new String[] {itemName});
             }
         } catch (SQLException e) {
             e.printStackTrace();

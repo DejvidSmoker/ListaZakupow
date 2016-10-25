@@ -177,7 +177,7 @@ public class AddItemsActivity extends AppCompatActivity
             Cursor cursor = db.query(listName + REST_OF_TABLE_NAME,
                     new String[] {"ITEM_NAME", "ITEM_CHECKED"},
                     null, null, null, null,
-                    "ITEM_CHECKED ASC"); //lub ITEM_CHECKED ASC / ITEM_CHECKED DESC
+                    "ITEM_CHECKED ASC");
 
             int count = cursor.getCount();
             Bundle args = new Bundle();
