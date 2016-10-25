@@ -177,39 +177,27 @@ public class AddItemsActivity extends AppCompatActivity
             db = openHelper.getReadableDatabase();
             Cursor cursor = db.query(listName + REST_OF_TABLE_NAME,
                     new String[] {"ITEM_NAME", "ITEM_CHECKED"},
-                    null, null, null, null, null); //lub ITEM_CHECKED ASC / ITEM_CHECKED DESC
+                    null, null, null, null,
+                    "ITEM_CHECKED ASC"); //lub ITEM_CHECKED ASC / ITEM_CHECKED DESC
 
             int count = cursor.getCount();
             Bundle args = new Bundle();
 
             ArrayList<ItemProperties> items = new ArrayList<>(count);
             if (count > 0) {
-                int listNr = 0;
 
-                if (cursor.moveToFirst()) {
-                    if (cursor.getInt(1) == 0) {
-                        items.add(listNr, new ItemProperties(cursor.getString(0), cursor.getInt(1)));
+                if (count > 0) {
+                    int listNr = 0;
+
+                    if (cursor.moveToFirst()) {
+                        items.add(listNr, new ItemProperties(cursor.getString(0),
+                                                                cursor.getInt(1)));
                         listNr++;
                     }
-                }
-                if (count > 1) {
-                    while (cursor.moveToNext()) {
-                        if (cursor.getInt(1) == 0) {
-                            items.add(listNr, new ItemProperties(cursor.getString(0), cursor.getInt(1)));
-                            listNr++;
-                        }
-                    }
-                }
-                if (cursor.moveToFirst()) {
-                    if (cursor.getInt(1) != 0) {
-                        items.add(listNr, new ItemProperties(cursor.getString(0), cursor.getInt(1)));
-                        listNr++;
-                    }
-                }
-                if (count > 1) {
-                    while (cursor.moveToNext()) {
-                        if (cursor.getInt(1) != 0) {
-                            items.add(listNr, new ItemProperties(cursor.getString(0), cursor.getInt(1)));
+                    if (count > 1) {
+                        while (cursor.moveToNext()) {
+                            items.add(listNr,  new ItemProperties(cursor.getString(0),
+                                                                    cursor.getInt(1)));
                             listNr++;
                         }
                     }
