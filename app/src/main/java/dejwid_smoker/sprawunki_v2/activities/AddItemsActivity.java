@@ -13,17 +13,16 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
 
 import dejwid_smoker.sprawunki_v2.MainActivity;
 import dejwid_smoker.sprawunki_v2.R;
+import dejwid_smoker.sprawunki_v2.database.ListDatabaseHelper;
 import dejwid_smoker.sprawunki_v2.fragments_add_items.AddItemFragment;
 import dejwid_smoker.sprawunki_v2.fragments_add_items.CategoryFragment;
 import dejwid_smoker.sprawunki_v2.fragments_add_items.ShowItemsFragment;
-import dejwid_smoker.sprawunki_v2.database.ListDatabaseHelper;
 import dejwid_smoker.sprawunki_v2.fragments_main.AddListFragment;
 import dejwid_smoker.sprawunki_v2.pojo.ItemProperties;
 
@@ -67,6 +66,7 @@ public class AddItemsActivity extends AppCompatActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         if (newList) {
+            listName = lookForFreeName(listName, "lists", "NAME");
             addNewRecord(listName);
         }
 
@@ -215,7 +215,6 @@ public class AddItemsActivity extends AppCompatActivity
                     }
                 }
             }
-//            args.putStringArrayList(ShowItemsFragment.ITEMS_ARRAY, items);
             args.putParcelableArrayList(ShowItemsFragment.ITEMS_ARRAY, items);
             args.putString(ShowItemsFragment.CURRENT_NAME_LIST, listName);
             fragment.setArguments(args);
@@ -229,7 +228,6 @@ public class AddItemsActivity extends AppCompatActivity
     private void addNewRecord(String lName) {
         ContentValues contentValues = new ContentValues();
         try {
-
             db = openHelper.getWritableDatabase();
             contentValues.put("NAME", lName);
             db.insert("lists", null, contentValues);
@@ -258,29 +256,7 @@ public class AddItemsActivity extends AppCompatActivity
 
     private void addNewItemToDb(String justAdded) {
         try {
-            cursor = db.query(listName + REST_OF_TABLE_NAME,
-                    new String[] {"ITEM_NAME"}, null, null, null, null, null);
-
-            if (cursor != null) {
-                cursor.moveToFirst();
-                int howMany = 0;
-                for (int i = 0; i < cursor.getCount(); i++) {
-                    String eachItem = cursor.getString(0);
-                    String eachItemWithoutCount = cursor.getString(0)
-                            .substring(0, eachItem.length() - 3);
-
-                    if (eachItem.contentEquals(justAdded) ||
-                            eachItemWithoutCount.contentEquals(justAdded)) {
-                        howMany++;
-                    }
-
-                    cursor.moveToNext();
-                }
-                Log.i("iteration = ", String.valueOf(howMany));
-                if (howMany > 0) {
-                    justAdded = justAdded + "(" + (howMany) + ")";
-                }
-            }
+            justAdded = lookForFreeName(justAdded, listName + REST_OF_TABLE_NAME, "ITEM_NAME");
 
 //          ZMIENIC DOMYSLNE I USUNAC TO GOWNO
             ContentValues contentValues = new ContentValues();
@@ -296,6 +272,44 @@ public class AddItemsActivity extends AppCompatActivity
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private String lookForFreeName (String name, String tableName, String columnName) {
+        try {
+
+            if (name.equals("")) {
+                name = getString(R.string.no_name);
+            }
+            db = openHelper.getReadableDatabase();
+            cursor = db.rawQuery("SELECT " + columnName + " FROM " + tableName, null);
+
+            if (cursor != null) {
+                cursor.moveToFirst();
+                int howMany = 0;
+                for (int i = 0; i < cursor.getCount(); i++) {
+                    String eachItem = cursor.getString(0);
+                    String eachItemWithoutCount = "";
+
+                    if (eachItem.length() >= 3) {
+                        eachItemWithoutCount = eachItem.substring(0, eachItem.length() - 3);
+                    }
+
+                    if (eachItem.equals(name) || eachItemWithoutCount.equals(name)) {
+                        howMany++;
+                    }
+
+                    cursor.moveToNext();
+                }
+
+                if (howMany > 0) {
+                    name = name + "_" + (howMany);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return name;
     }
 
     private void backToParentList() {

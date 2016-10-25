@@ -36,6 +36,7 @@
     <string name="ask_to_exit">Czy chcesz wyłączyć aplikację?</string>
     <string name="exit_yes">Tak</string>
     <string name="exit_no">Jeszcze nie</string>
+    <string name="no_name">brak_nazwy</string>
 
 
 </resources>

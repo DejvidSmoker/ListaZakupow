@@ -107,7 +107,7 @@ public class ListsFragment extends Fragment {
                     "NAME = ?",
                     new String[]{name});
 
-            db.execSQL("DROP TABLE " + ListDatabaseHelper.DB_NAME + "." + name + "_table;");
+            db.execSQL("DROP TABLE " + name + "_table;");
 
             db.close();
         } catch (SQLiteException e) {
