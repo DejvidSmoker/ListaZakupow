@@ -171,7 +171,6 @@ public class AddItemsActivity extends AppCompatActivity
         showCurrFrag(SHOW_ITEMS_FRAGMENT);
     }
 
-    //odczyt i pokazanie itemow listy w showfrag
     private void showListItems(Fragment fragment) {
         try {
             db = openHelper.getReadableDatabase();
