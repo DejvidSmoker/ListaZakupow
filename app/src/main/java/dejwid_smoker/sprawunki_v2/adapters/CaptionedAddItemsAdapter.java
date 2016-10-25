@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -23,6 +24,7 @@ public class CaptionedAddItemsAdapter extends
     public static interface Listener {
         public void onClick(int position, String name);
         public void onClickDelete(int position, String name);
+        public void onCheckClicked(int position, String name, boolean checked);
     }
 
 
@@ -79,9 +81,13 @@ public class CaptionedAddItemsAdapter extends
         });
 
         final int check = items.get(position).getItemChecked();
-
         gotIt.setChecked(checkGotIt(check));
-
+        gotIt.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                listener.onCheckClicked(position, items.get(position).getItemName(), isChecked);
+            }
+        });
     }
 
     @Override

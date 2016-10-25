@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ import dejwid_smoker.sprawunki_v2.pojo.ItemProperties;
 
 public class AddItemsActivity extends AppCompatActivity
         implements AddItemFragment.OnListCategoryClicked,
-        CategoryFragment.OnItemCategoryClicked,
+                    CategoryFragment.OnItemCategoryClicked,
                     AddItemFragment.OnConfirmButtonClicked {
 
     public static final String REST_OF_TABLE_NAME = "_table";
@@ -43,6 +44,7 @@ public class AddItemsActivity extends AppCompatActivity
     private FloatingActionButton fabAdd;
     private SQLiteDatabase db;
     private SQLiteOpenHelper openHelper;
+    private Cursor cursor;
     private Toolbar toolbar;
     private String listName;
     private int currentFrag;
@@ -224,10 +226,10 @@ public class AddItemsActivity extends AppCompatActivity
         runFragment(fragment);
     }
 
-    //dodanie nowej listy po dialogu
     private void addNewRecord(String lName) {
         ContentValues contentValues = new ContentValues();
         try {
+
             db = openHelper.getWritableDatabase();
             contentValues.put("NAME", lName);
             db.insert("lists", null, contentValues);
@@ -256,12 +258,34 @@ public class AddItemsActivity extends AppCompatActivity
 
     private void addNewItemToDb(String justAdded) {
         try {
+            cursor = db.query(listName + REST_OF_TABLE_NAME,
+                    new String[] {"ITEM_NAME"}, null, null, null, null, null);
+
+            if (cursor != null) {
+                cursor.moveToFirst();
+                int howMany = 0;
+                for (int i = 0; i < cursor.getCount(); i++) {
+                    String eachItem = cursor.getString(0);
+                    String eachItemWithoutCount = cursor.getString(0)
+                            .substring(0, eachItem.length() - 3);
+
+                    if (eachItem.contentEquals(justAdded) ||
+                            eachItemWithoutCount.contentEquals(justAdded)) {
+                        howMany++;
+                    }
+
+                    cursor.moveToNext();
+                }
+                Log.i("iteration = ", String.valueOf(howMany));
+                if (howMany > 0) {
+                    justAdded = justAdded + "(" + (howMany) + ")";
+                }
+            }
+
+//          ZMIENIC DOMYSLNE I USUNAC TO GOWNO
             ContentValues contentValues = new ContentValues();
             contentValues.put("ITEM_NAME", justAdded);
             contentValues.put("ITEM_CHECKED", 0);
-//            DODAC DOMYSLNE
-//            !!!!!!//            DODAC DOMYSLNE
-
             contentValues.put("ITEM_PRICE", 1.1);
             contentValues.put("ITEM_COUNT", 1.1);
             contentValues.put("ITEM_UNIT", "default");

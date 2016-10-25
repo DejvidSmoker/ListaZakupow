@@ -28,10 +28,7 @@ public class AddListFragment extends DialogFragment {
     private Button btnAdd;
     private Button btnClose;
 
-    public AddListFragment() {
-        // Required empty public constructor
-    }
-
+    public AddListFragment() { }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,7 +60,6 @@ public class AddListFragment extends DialogFragment {
         });
 
         loadDefaultValues();
-
         return view;
     }
 

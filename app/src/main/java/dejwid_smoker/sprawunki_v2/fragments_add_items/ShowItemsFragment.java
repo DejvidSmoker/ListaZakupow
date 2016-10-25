@@ -1,5 +1,6 @@
 package dejwid_smoker.sprawunki_v2.fragments_add_items;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import dejwid_smoker.sprawunki_v2.R;
+import dejwid_smoker.sprawunki_v2.activities.AddItemsActivity;
 import dejwid_smoker.sprawunki_v2.activities.EditItemActivity;
 import dejwid_smoker.sprawunki_v2.adapters.CaptionedAddItemsAdapter;
 import dejwid_smoker.sprawunki_v2.database.ListDatabaseHelper;
@@ -30,6 +32,9 @@ public class ShowItemsFragment extends Fragment {
     public static final String CURRENT_NAME_LIST = "current_list_name";
     public static final String ITEM_POSITION = "item_position";
     public static final String ITEM_NAME = "item_name";
+    private static final int DELETE_ITEM = 0;
+    private static final int UPDATE_ITEM_CHECK = 1;
+    private static final boolean JUST_FOR_CHECK = false;
 
     private ArrayList<ItemProperties> items;
     private String currentListName;
@@ -68,7 +73,7 @@ public class ShowItemsFragment extends Fragment {
                 @Override
                 public void onClickDelete(int position, String name) {
                     items.remove(position);
-                    deleteItem(name);
+                    workOnDb(name, DELETE_ITEM, JUST_FOR_CHECK);
 
                     Fragment currentFragment = getActivity().getSupportFragmentManager()
                             .findFragmentById(R.id.content_add_item);
@@ -81,21 +86,38 @@ public class ShowItemsFragment extends Fragment {
                         fragTransaction.commit();
                     }
                 }
+
+                @Override
+                public void onCheckClicked(int position, String name, boolean checked) {
+
+                }
             });
 
         }
         return recyclerView;
     }
 
-    private void deleteItem(String itemName) {
+    private void workOnDb(String itemName, int whichAction, boolean justForCheck) {
         try {
             SQLiteOpenHelper openHelper = new ListDatabaseHelper(getActivity());
             SQLiteDatabase db = openHelper.getWritableDatabase();
 
-            db.delete(currentListName + "_table",
-                    "ITEM_NAME = ?",
-                    new String[] {itemName});
+            if (whichAction == DELETE_ITEM) {
+                db.delete(currentListName + "_table",
+                        "ITEM_NAME = ?",
+                        new String[]{itemName});
+            } else if (whichAction == UPDATE_ITEM_CHECK) {
+                int putToDb;
+                if (justForCheck) putToDb = 1;
+                else putToDb = 0;
 
+                ContentValues contentValues = new ContentValues();
+                contentValues.put("ITEM_CHECKED", putToDb);
+                db.update(currentListName + AddItemsActivity.REST_OF_TABLE_NAME,
+                        contentValues,
+                        "ITEM_NAME = ?",
+                        new String[]{String.valueOf(putToDb)});
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
