@@ -231,7 +231,7 @@ public class AddItemsActivity extends AppCompatActivity
 
     @Override
     public void onCategoryListClick(int position) {
-        keyboardHide.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+//        keyboardHide.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
 
         Fragment fragment = new CategoryFragment();
 
