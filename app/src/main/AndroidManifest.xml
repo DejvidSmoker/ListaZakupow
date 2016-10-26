@@ -21,7 +21,7 @@
             android:name=".activities.AddItemsActivity"
             android:label="@string/title_activity_add_items"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AddTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="dejwid_smoker.sprawunki_v2.MainActivity" />
@@ -31,7 +31,7 @@
             android:name=".activities.EditItemActivity"
             android:label="@string/title_activity_edit_item"
             android:parentActivityName=".activities.AddItemsActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/EditTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

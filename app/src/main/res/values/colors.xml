@@ -8,4 +8,8 @@
     <color name="colorPrimaryDarkEdit">#E64A19</color>
     <color name="colorAccent">#8BC34A</color>
     <color name="item_clicked">#8BC34A</color>
+    <color name="colorAccentAdd">#4DD0E1</color>
+    <color name="item_clicked_add">#4DD0E1</color>
+    <color name="colorAccentEdit">#D4E157</color>
+    <color name="item_clicked_edit">#D4E157</color>
 </resources>
