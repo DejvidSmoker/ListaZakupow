@@ -20,7 +20,7 @@
     <string name="alert_dialog_cancel">Anuluj</string>
     <string name="alert_dialog_two_buttons_title">TEST!</string>
     <string name="title_add_item">Dodaj nowy sprawunek</string>
-    <string name="default_values">DOMYŚLNE WARTOŚCI</string>
+    <string name="default_values">DOMYŚLNA NAZWA LISTY</string>
     <string name="sharing_preferences">OPCJE UDOSTĘPNIANIA</string>
     <string name="title_activity_edit_item">EditItemActivity</string>
     <string name="add_comment">Dodaj uwagi....</string>
@@ -43,6 +43,26 @@
     <string name="bought">Już kupione:</string>
     <string name="refresh_list">Odśwież listę</string>
     <string name="categories">Kategorie:</string>
+    <string name="pref_default_values">Domyślna nazwa listy</string>
+    <string name="pref_default_item_values">Domyślne wartości przedmiotu</string>
+    <string name="default_item_values">DOMYŚLNE WARTOŚCI PRZEDMIOTU</string>
+    <string name="settings">OPCJE</string>
+    <string name="default_price">Domyślna cena</string>
+    <string name="default_amount">Domyślna ilość</string>
+    <string name="amount">Ilość</string>
+    <string name="price">Cena</string>
+    <string name="list_name">Nazwa listy</string>
+    <string name="def_list_name">Domyślna nazwa listy</string>
+    <string name="edit_default_values">Edytuj domyślne wartości</string>
+    <string name="default_list">Domyślna lista</string>
+    <string name="default_item_price">Domyślna cena przedmiotu</string>
+    <string name="default_item_amount">Domyślna cena przedmiotu</string>
+    <string name="unit">Jednostka</string>
+    <string name="default_unit_pref">Domyślna jednostka przedmiotu</string>
+    <string name="default_comment">Domyślny komentarz</string>
+    <string name="default_comment_pref">Domyślny komentarz przedmiotu</string>
+    <string name="comment">Komentarz</string>
+    <string name="alert_dialog_apply">Zapisz</string>
 
 
 </resources>

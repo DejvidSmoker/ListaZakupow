@@ -1,40 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        android:title="@string/sharing_preferences"
-        android:key="pref_key_storage_settings">
+        android:key="pref_settings"
+        android:title="@string/settings">
+
+        <SwitchPreference
+            android:key="pref_default_values"
+            android:summary="@string/edit_default_values"
+            android:title="@string/pref_default_values" />
+
+        <SwitchPreference
+            android:key="pref_default_item_values"
+            android:summary="@string/edit_default_values"
+            android:title="@string/pref_default_item_values" />
 
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="@string/default_values"
-        android:key="pref_default_values">
-
-        <SwitchPreference
-            android:title="Domyślne wartości"
-            android:summary="Edytuj domyślne wartości"
-            android:key="pref_default_values" />
+        android:key="pref_default_values"
+        android:title="@string/default_values">
 
         <EditTextPreference
-            android:dialogTitle="Domyślna lista"
+            android:dependency="pref_default_values"
+            android:dialogTitle="@string/default_list"
             android:key="pref_default_list_name"
-            android:dependency="pref_default_values"
-            android:negativeButtonText="Anuluj"
-            android:positiveButtonText="OK"
-            android:title="Nazwa listy"
-            android:summary="Domyślna nazwa listy"/>
+            android:negativeButtonText="@string/alert_dialog_cancel"
+            android:positiveButtonText="@string/alert_dialog_apply"
+            android:summary="@string/def_list_name"
+            android:title="@string/list_name" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="pref_default_item_values"
+        android:title="@string/default_item_values">
 
         <EditTextPreference
-            android:dialogTitle="Domyślna cena"
-            android:key="pref_default_price"
-            android:inputType="numberDecimal"
-            android:dependency="pref_default_values"
-            android:negativeButtonText="Anuluj"
-            android:positiveButtonText="OK"
-            android:title="Cena"
             android:defaultValue="2.99"
-            android:summary="Domyślna cena przedmiotu"/>
+            android:dependency="pref_default_item_values"
+            android:dialogTitle="@string/default_price"
+            android:inputType="numberDecimal"
+            android:key="pref_default_price"
+            android:negativeButtonText="@string/alert_dialog_cancel"
+            android:positiveButtonText="@string/alert_dialog_apply"
+            android:summary="@string/default_item_price"
+            android:title="@string/price" />
+
+        <EditTextPreference
+            android:defaultValue="1"
+            android:dependency="pref_default_item_values"
+            android:dialogTitle="@string/default_amount"
+            android:inputType="numberDecimal"
+            android:key="pref_default_amount"
+            android:negativeButtonText="@string/alert_dialog_cancel"
+            android:positiveButtonText="@string/alert_dialog_apply"
+            android:summary="@string/default_item_amount"
+            android:title="@string/amount" />
+
+        <ListPreference
+            android:dependency="pref_default_item_values"
+            android:dialogTitle="@string/default_unit_pref"
+            android:entries="@array/units"
+            android:entryValues="@array/units"
+            android:key="pref_default_unit"
+            android:summary="@string/default_unit_pref"
+            android:negativeButtonText="@string/alert_dialog_cancel"
+            android:title="@string/unit" />
+
+        <EditTextPreference
+            android:dependency="pref_default_item_values"
+            android:dialogTitle="@string/default_comment"
+            android:key="pref_default_comment"
+            android:negativeButtonText="@string/alert_dialog_cancel"
+            android:positiveButtonText="@string/alert_dialog_apply"
+            android:summary="@string/default_comment_pref"
+            android:title="@string/comment" />
 
     </PreferenceCategory>
 </PreferenceScreen>

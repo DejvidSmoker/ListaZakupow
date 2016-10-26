@@ -2,11 +2,13 @@ package dejwid_smoker.sprawunki_v2.activities;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -45,6 +47,7 @@ public class AddItemsActivity extends AppCompatActivity
 
     private InputMethodManager keyboardHide;
     private FloatingActionButton fabAdd;
+    private SharedPreferences sharedPreferences;
     private SQLiteDatabase db;
     private SQLiteOpenHelper openHelper;
     private Cursor cursor;
@@ -97,7 +100,10 @@ public class AddItemsActivity extends AppCompatActivity
                 }
             }
         });
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         keyboardHide= (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+
         showCurrFrag(currentFrag);
         createFabs();
     }
@@ -217,7 +223,7 @@ public class AddItemsActivity extends AppCompatActivity
 
     @Override
     public void onCategoryListClick(int position) {
-        keyboardHide.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+//        keyboardHide.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
 
         Fragment fragment = new CategoryFragment();
 
@@ -318,14 +324,28 @@ public class AddItemsActivity extends AppCompatActivity
         try {
             justAdded = lookForFreeName(justAdded, listName + REST_OF_TABLE_NAME, "ITEM_NAME");
 
-//          ZMIENIC DOMYSLNE I USUNAC TO GOWNO
             ContentValues contentValues = new ContentValues();
             contentValues.put("ITEM_NAME", justAdded);
             contentValues.put("ITEM_CHECKED", 0);
-            contentValues.put("ITEM_PRICE", 1.1);
-            contentValues.put("ITEM_COUNT", 1.1);
-            contentValues.put("ITEM_UNIT", "default");
-            contentValues.put("ITEM_COMMENT", "comm");
+
+            boolean defaultItemValues =
+                    sharedPreferences.getBoolean("pref_default_item_values", false);
+            if (defaultItemValues) {
+                String prefDefaultPrice = sharedPreferences.getString("pref_default_price", "");
+                String prefDefaultAmount = sharedPreferences.getString("pref_default_amount", "");
+                String prefDefaultUnit = sharedPreferences.getString("pref_default_amount", "");
+                String prefDefaultComment = sharedPreferences.getString("pref_default_comment", "");
+
+                contentValues.put("ITEM_PRICE", Double.parseDouble(prefDefaultPrice));
+                contentValues.put("ITEM_COUNT", Double.parseDouble(prefDefaultAmount));
+                contentValues.put("ITEM_UNIT", prefDefaultUnit);
+                contentValues.put("ITEM_COMMENT", prefDefaultComment);
+            } else {
+                contentValues.put("ITEM_PRICE", 1);
+                contentValues.put("ITEM_COUNT", 1);
+                contentValues.put("ITEM_UNIT", "");
+                contentValues.put("ITEM_COMMENT", "");
+            }
 
             db.insert(listName + REST_OF_TABLE_NAME, null, contentValues);
 
