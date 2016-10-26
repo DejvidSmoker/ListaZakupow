@@ -58,7 +58,6 @@ public class EditItemActivity extends AppCompatActivity
         setContentView(R.layout.activity_edit_item);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
 
         if (savedInstanceState != null) {
             currentFragment = savedInstanceState.getInt(CURRENT_EDIT_FRAGMENT);
@@ -85,28 +84,28 @@ public class EditItemActivity extends AppCompatActivity
             public void onClick(View view) {
                 saveToDb();
                 backToParentList();
-//                workOnDb(listName, currentFragment, itemPosOnList);
             }
         });
 
         getSupportFragmentManager().addOnBackStackChangedListener(
                 new FragmentManager.OnBackStackChangedListener() {
-            @Override
-            public void onBackStackChanged() {
-                FragmentManager fm = getSupportFragmentManager();
-                Fragment fragment = fm.findFragmentByTag(VISIBLE_EDIT_FRAGMENT);
-                if (fragment instanceof ItemInfoFragment) {
-                    currentFragment = ITEM_INFO_FRAGMENT;
-                    setToolbarToEachFrag(itemName, SHOW_BACK_TO_PARENT);
-                    setFab(currentFragment);
-                }
-                if (fragment instanceof EditItemFragment) {
-                    currentFragment = EDIT_ITEM_FRAGMENT;
-                    setToolbarToEachFrag(itemName, HIDE_BACK_TO_PARENT);
-                    setFab(currentFragment);
-                }
-            }
-        });
+                    @Override
+                    public void onBackStackChanged() {
+                        FragmentManager fm = getSupportFragmentManager();
+                        Fragment fragment = fm.findFragmentByTag(VISIBLE_EDIT_FRAGMENT);
+                        if (fragment instanceof ItemInfoFragment) {
+                            currentFragment = ITEM_INFO_FRAGMENT;
+                            setToolbarToEachFrag(itemName, SHOW_BACK_TO_PARENT);
+                            setFab(currentFragment);
+                        }
+                        if (fragment instanceof EditItemFragment) {
+                            currentFragment = EDIT_ITEM_FRAGMENT;
+                            setToolbarToEachFrag(getString(R.string.edit_item) + itemName,
+                                    HIDE_BACK_TO_PARENT);
+                            setFab(currentFragment);
+                        }
+                    }
+                });
 
 
         workOnDb(listName, currentFragment, itemPosOnList);
@@ -186,7 +185,9 @@ public class EditItemActivity extends AppCompatActivity
         EditText itemComment = (EditText) findViewById(R.id.set_comment);
 
         int checkSwitch = 0;
-        if (itemChecked.isChecked()) { checkSwitch = 1; }
+        if (itemChecked.isChecked()) {
+            checkSwitch = 1;
+        }
 
         try {
             ContentValues contentValues = new ContentValues();
@@ -200,7 +201,7 @@ public class EditItemActivity extends AppCompatActivity
             db.update(listName + AddItemsActivity.REST_OF_TABLE_NAME,
                     contentValues,
                     "_id = ?",
-                    new String[] {String.valueOf(itemPosOnList + 1)});
+                    new String[]{String.valueOf(itemPosOnList + 1)});
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -208,13 +209,13 @@ public class EditItemActivity extends AppCompatActivity
     }
 
     private ItemProperties getItemProperties(ItemProperties properties,
-                                                   String lName,
-                                                   int iPos) {
+                                             String lName,
+                                             int iPos) {
         cursor = db.query(lName + AddItemsActivity.REST_OF_TABLE_NAME,
-                new String[] {"ITEM_NAME", "ITEM_CHECKED", "ITEM_PRICE", "ITEM_COUNT", "ITEM_UNIT",
+                new String[]{"ITEM_NAME", "ITEM_CHECKED", "ITEM_PRICE", "ITEM_COUNT", "ITEM_UNIT",
                         "ITEM_COMMENT"},
                 "_id = ?",
-                new String[] {String.valueOf(iPos + 1)}, null, null, null);
+                new String[]{String.valueOf(iPos + 1)}, null, null, null);
 
         if (cursor.moveToFirst()) {
             properties = new ItemProperties(cursor.getString(0), cursor.getInt(1),

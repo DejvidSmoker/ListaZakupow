@@ -12,10 +12,6 @@ import java.util.ArrayList;
 
 import dejwid_smoker.sprawunki_v2.R;
 
-/**
- * Created by Dawid on 2016-10-05.
- */
-
 public class CaptionedMainAdapter extends RecyclerView.Adapter<CaptionedMainAdapter.ViewHolder> {
 
     private Listener listener;
@@ -23,13 +19,15 @@ public class CaptionedMainAdapter extends RecyclerView.Adapter<CaptionedMainAdap
 
     public static interface Listener {
         public void onClick(int position, String name);
+
         public void onClickDelete(int position, String name);
     }
 
 
-    public static class ViewHolder extends  RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         private CardView cardView;
+
         public ViewHolder(CardView view) {
             super(view);
             cardView = view;

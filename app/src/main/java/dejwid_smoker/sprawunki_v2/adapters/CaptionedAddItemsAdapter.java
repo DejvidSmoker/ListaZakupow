@@ -24,14 +24,17 @@ public class CaptionedAddItemsAdapter extends
 
     public static interface Listener {
         public void onClick(int position, String name);
+
         public void onClickDelete(int position, String name);
+
         public void onCheckClicked(int position, String name, int checked, boolean isChecked);
     }
 
 
-    public static class ViewHolder extends  RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         private CardView cardView;
+
         public ViewHolder(CardView view) {
             super(view);
             cardView = view;
@@ -102,12 +105,9 @@ public class CaptionedAddItemsAdapter extends
     }
 
     private boolean checkGotIt(int check) {
-        if (check == 0) {
-            return false;
-        } else {
-            return true;
-        }
+        return check != 0;
     }
+
     private int checkGotItToInt(boolean check) {
         if (check) {
             return 1;

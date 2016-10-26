@@ -39,7 +39,8 @@ public class ShowItemsFragment extends Fragment {
     private ArrayList<ItemProperties> items;
     private String currentListName;
 
-    public ShowItemsFragment() { }
+    public ShowItemsFragment() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
@@ -114,8 +115,7 @@ public class ShowItemsFragment extends Fragment {
                 int putToDb;
                 if (justForCheck) {
                     putToDb = 1;
-                }
-                else {
+                } else {
                     putToDb = 0;
                 }
 
@@ -124,7 +124,7 @@ public class ShowItemsFragment extends Fragment {
                 db.update(currentListName + AddItemsActivity.REST_OF_TABLE_NAME,
                         contentValues,
                         "ITEM_NAME = ?",
-                        new String[] {itemName});
+                        new String[]{itemName});
             }
         } catch (SQLException e) {
             e.printStackTrace();

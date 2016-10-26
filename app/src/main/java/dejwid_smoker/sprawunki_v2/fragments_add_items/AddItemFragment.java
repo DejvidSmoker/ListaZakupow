@@ -20,7 +20,6 @@ import dejwid_smoker.sprawunki_v2.R;
  */
 public class AddItemFragment extends Fragment {
 
-    private static final String TEXT_EDIT = "text_edit";
     public EditText editText;
 
     public interface OnListCategoryClicked {
@@ -35,7 +34,6 @@ public class AddItemFragment extends Fragment {
     private OnConfirmButtonClicked listenerConfirm;
 
     public AddItemFragment() {
-        // Required empty public constructor
     }
 
     @SuppressWarnings("deprecation")
@@ -63,7 +61,7 @@ public class AddItemFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_add_item, container, false);
 
         ListViewCompat listView = (ListViewCompat) view.findViewById(R.id.category_list_view);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_expandable_list_item_1,
                 getResources().getStringArray(R.array.categories));
         listView.setAdapter(adapter);

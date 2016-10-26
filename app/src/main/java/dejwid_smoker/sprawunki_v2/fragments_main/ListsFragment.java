@@ -23,9 +23,6 @@ import dejwid_smoker.sprawunki_v2.activities.AddItemsActivity;
 import dejwid_smoker.sprawunki_v2.adapters.CaptionedMainAdapter;
 import dejwid_smoker.sprawunki_v2.database.ListDatabaseHelper;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class ListsFragment extends Fragment {
 
     public static final String LISTS_MAIN = "lists_main";
@@ -33,7 +30,8 @@ public class ListsFragment extends Fragment {
     private SQLiteDatabase db;
     private ArrayList<String> names;
 
-    public ListsFragment() {}
+    public ListsFragment() {
+    }
 
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,

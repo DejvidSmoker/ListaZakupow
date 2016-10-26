@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view_main"
     android:layout_width="match_parent"
     android:layout_height="70dp"
     android:layout_margin="5dp"
-    card_view:cardCornerRadius="4dp" >
+    card_view:cardCornerRadius="4dp">
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/text_card_main"
-            android:layout_weight="6"
             android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="5dp"
+            android:layout_weight="6"
             android:gravity="center_vertical"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_height="match_parent" />
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <ImageView
             android:id="@+id/delete_card_view_main"
-            android:layout_weight="1"
             android:layout_width="0dp"
-            android:src="@android:drawable/ic_menu_delete"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:contentDescription="@string/delete_captioned"
+            android:src="@android:drawable/ic_menu_delete" />
     </LinearLayout>
 
 </android.support.v7.widget.CardView>

@@ -3,7 +3,6 @@ package dejwid_smoker.sprawunki_v2.fragments_add_items;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,9 +14,6 @@ import android.widget.Toast;
 
 import dejwid_smoker.sprawunki_v2.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class CategoryFragment extends ListFragment {
 
     public interface OnItemCategoryClicked {
@@ -30,7 +26,7 @@ public class CategoryFragment extends ListFragment {
 
     private int arrayId;
 
-    public CategoryFragment() { }
+    public CategoryFragment() {}
 
 
     @SuppressWarnings("deprecation")
@@ -52,7 +48,7 @@ public class CategoryFragment extends ListFragment {
         int whichCategory = args.getInt(POSITION_CATEGORY, 0);
         Log.v("position", String.valueOf(whichCategory));
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_expandable_list_item_1,
                 android.R.id.text1,
                 getArray(whichCategory));
@@ -93,7 +89,7 @@ public class CategoryFragment extends ListFragment {
             default:
                 Toast.makeText(getActivity(),
                         "Brak danych dla kategorii",
-                                Toast.LENGTH_SHORT).show();
+                        Toast.LENGTH_SHORT).show();
         }
         return getResources().getStringArray(arrayId);
     }

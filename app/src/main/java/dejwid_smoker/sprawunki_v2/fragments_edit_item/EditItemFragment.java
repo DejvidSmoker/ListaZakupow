@@ -18,9 +18,6 @@ import dejwid_smoker.sprawunki_v2.R;
 import dejwid_smoker.sprawunki_v2.activities.EditItemActivity;
 import dejwid_smoker.sprawunki_v2.pojo.ItemProperties;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class EditItemFragment extends Fragment {
 
     public interface OnSelectUnitClicked {
@@ -29,7 +26,7 @@ public class EditItemFragment extends Fragment {
 
     private OnSelectUnitClicked listener;
 
-    public EditItemFragment() { }
+    public EditItemFragment() {}
 
     @SuppressWarnings("deprecation")
     @Override
@@ -72,11 +69,16 @@ public class EditItemFragment extends Fragment {
                 }
 
                 @Override
-                public void onNothingSelected(AdapterView<?> parent) { }
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
             });
 
-            if (itemProperties.getItemChecked() == 1) {
-                itemChecked.setChecked(true);
+            try {
+                if (itemProperties.getItemChecked() == 1) {
+                    itemChecked.setChecked(true);
+                }
+            } catch (NullPointerException e) {
+                e.printStackTrace();
             }
             itemPrice.setText(String.valueOf(itemProperties.getItemPrice()),
                     TextView.BufferType.EDITABLE);

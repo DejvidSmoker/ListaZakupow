@@ -33,15 +33,15 @@ import dejwid_smoker.sprawunki_v2.pojo.ItemProperties;
 
 public class AddItemsActivity extends AppCompatActivity
         implements AddItemFragment.OnListCategoryClicked,
-                    CategoryFragment.OnItemCategoryClicked,
-                    AddItemFragment.OnConfirmButtonClicked {
+        CategoryFragment.OnItemCategoryClicked,
+        AddItemFragment.OnConfirmButtonClicked {
 
     public static final String REST_OF_TABLE_NAME = "_table";
     public static final String VISIBLE_FRAGMENT = "visible_fragment";
     private static final String CURRENT_FRAGMENT = "current_fragment";
     private static final int SHOW_ITEMS_FRAGMENT = 0;
     private static final int ADD_ITEM_FRAGMENT = 1;
-//    private static final int CATEGORY_FRAGMENT = 2;
+    //    private static final int CATEGORY_FRAGMENT = 2;
     private static final boolean HOME_BUTTON_ENABLE = true;
     private static final boolean HOME_BUTTON_DISABLE = false;
 
@@ -79,30 +79,30 @@ public class AddItemsActivity extends AppCompatActivity
 
         getSupportFragmentManager().addOnBackStackChangedListener(
                 new FragmentManager.OnBackStackChangedListener() {
-            @Override
-            public void onBackStackChanged() {
-                FragmentManager fm = getSupportFragmentManager();
-                Fragment fragment = fm.findFragmentByTag(VISIBLE_FRAGMENT);
-                if (fragment instanceof ShowItemsFragment) {
-                    currentFrag = SHOW_ITEMS_FRAGMENT;
-                    fabAdd.show();
-                    setToolbarToEachFrag(listName, HOME_BUTTON_ENABLE);
-                }
-                if (fragment instanceof AddItemFragment) {
-                    currentFrag = ADD_ITEM_FRAGMENT;
-                    fabAdd.hide();
-                    setToolbarToEachFrag(getString(R.string.title_add_item), HOME_BUTTON_DISABLE);
-                }
-                if (fragment instanceof CategoryFragment) {
-                    currentFrag = ADD_ITEM_FRAGMENT;
-                    fabAdd.hide();
-                    setToolbarToEachFrag("Kategoria", HOME_BUTTON_DISABLE);
-                }
-            }
-        });
+                    @Override
+                    public void onBackStackChanged() {
+                        FragmentManager fm = getSupportFragmentManager();
+                        Fragment fragment = fm.findFragmentByTag(VISIBLE_FRAGMENT);
+                        if (fragment instanceof ShowItemsFragment) {
+                            currentFrag = SHOW_ITEMS_FRAGMENT;
+                            fabAdd.show();
+                            setToolbarToEachFrag(listName, HOME_BUTTON_ENABLE);
+                        }
+                        if (fragment instanceof AddItemFragment) {
+                            currentFrag = ADD_ITEM_FRAGMENT;
+                            fabAdd.hide();
+                            setToolbarToEachFrag(getString(R.string.title_add_item), HOME_BUTTON_DISABLE);
+                        }
+                        if (fragment instanceof CategoryFragment) {
+                            currentFrag = ADD_ITEM_FRAGMENT;
+                            fabAdd.hide();
+                            setToolbarToEachFrag("Kategoria", HOME_BUTTON_DISABLE);
+                        }
+                    }
+                });
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        keyboardHide= (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        keyboardHide = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
         showCurrFrag(currentFrag);
         createFabs();
@@ -135,8 +135,14 @@ public class AddItemsActivity extends AppCompatActivity
             if (intentSend.resolveActivity(getPackageManager()) != null) {
                 startActivity(intentSend);
             }
+            return true;
         } else if (itemClick == R.id.refresh_list) {
             showCurrFrag(SHOW_ITEMS_FRAGMENT);
+            return true;
+        } else if (itemClick == R.id.nav_properties) {
+            Intent intent = new Intent(this, PreferencesActivity.class);
+            startActivity(intent);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -148,14 +154,15 @@ public class AddItemsActivity extends AppCompatActivity
 
         toBuy.append(getString(R.string.to_buy));
 
-        String itemName = "";
+        String itemName;
         int itemsToBuy = 0;
         int itemsBought = 0;
 
         for (int i = 0; i < items.size(); i++) {
             if (items.get(i).getItemChecked() != 1) {
                 itemName = items.get(i).getItemName();
-                toBuy.append(itemName + ", ");
+                toBuy.append(itemName);
+                toBuy.append(", ");
                 itemsToBuy++;
             }
         }
@@ -167,7 +174,8 @@ public class AddItemsActivity extends AppCompatActivity
         for (int i = 0; i < items.size(); i++) {
             if (items.get(i).getItemChecked() != 0) {
                 itemName = items.get(i).getItemName();
-                bought.append(itemName + ", ");
+                bought.append(itemName);
+                bought.append(", ");
                 itemsBought++;
             }
         }
@@ -223,7 +231,7 @@ public class AddItemsActivity extends AppCompatActivity
 
     @Override
     public void onCategoryListClick(int position) {
-//        keyboardHide.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        keyboardHide.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
 
         Fragment fragment = new CategoryFragment();
 
@@ -259,7 +267,7 @@ public class AddItemsActivity extends AppCompatActivity
         try {
             db = openHelper.getReadableDatabase();
             Cursor cursor = db.query(listName + REST_OF_TABLE_NAME,
-                    new String[] {"ITEM_NAME", "ITEM_CHECKED"},
+                    new String[]{"ITEM_NAME", "ITEM_CHECKED"},
                     null, null, null, null,
                     "ITEM_CHECKED ASC");
 
@@ -278,7 +286,7 @@ public class AddItemsActivity extends AppCompatActivity
                     }
                     if (count > 1) {
                         while (cursor.moveToNext()) {
-                            items.add(listNr,  new ItemProperties(cursor.getString(0),
+                            items.add(listNr, new ItemProperties(cursor.getString(0),
                                     cursor.getInt(1)));
                             listNr++;
                         }
@@ -354,7 +362,7 @@ public class AddItemsActivity extends AppCompatActivity
         }
     }
 
-    private String lookForFreeName (String name, String tableName, String columnName) {
+    private String lookForFreeName(String name, String tableName, String columnName) {
         try {
 
             if (name.equals("")) {
