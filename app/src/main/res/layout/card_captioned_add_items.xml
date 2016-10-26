@@ -17,7 +17,7 @@
             android:id="@+id/delete_card_view_add_items"
             android:layout_weight="1"
             android:layout_width="0dp"
-            android:src="@drawable/ic_close_black_24dp"
+            android:src="@drawable/ic_close"
             android:layout_height="match_parent" />
 
         <TextView

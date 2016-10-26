@@ -57,7 +57,7 @@
         app:layout_anchor="@id/app_bar_edit_item"
         app:layout_anchorGravity="bottom|end"
         android:elevation="0dp"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        app:srcCompat="@android:drawable/ic_menu_edit" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_save_edit_item"
