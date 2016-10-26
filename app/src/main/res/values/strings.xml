@@ -37,6 +37,10 @@
     <string name="exit_yes">Tak</string>
     <string name="exit_no">Jeszcze nie</string>
     <string name="no_name">brak_nazwy</string>
+    <string name="share_list">Udostępnij listę</string>
+    <string name="to_buy">Lista:</string>
+    <string name="no_items_to_buy">brak rzeczy do kupienia!</string>
+    <string name="bought">Już kupione:</string>
 
 
 </resources>

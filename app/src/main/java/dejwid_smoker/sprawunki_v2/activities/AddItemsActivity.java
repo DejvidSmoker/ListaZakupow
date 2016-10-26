@@ -13,6 +13,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -106,6 +108,67 @@ public class AddItemsActivity extends AppCompatActivity
         super.onBackPressed();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_add_items, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.share_list) {
+            Intent intentSend = new Intent();
+            intentSend.setAction(Intent.ACTION_SEND);
+            intentSend.putExtra(Intent.EXTRA_TITLE, listName);
+            intentSend.putExtra(Intent.EXTRA_TEXT, setListToImplicitIntent());
+            intentSend.setType("text/plain");
+
+            if (intentSend.resolveActivity(getPackageManager()) != null) {
+                startActivity(intentSend);
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private String setListToImplicitIntent() {
+        ArrayList<ItemProperties> items = getItemsFromTable();
+        StringBuilder toBuy = new StringBuilder();
+        StringBuilder bought = new StringBuilder();
+
+        toBuy.append(getString(R.string.to_buy));
+
+        String itemName = "";
+        int itemsToBuy = 0;
+        int itemsBought = 0;
+
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).getItemChecked() != 1) {
+                itemName = items.get(i).getItemName();
+                toBuy.append(itemName + ", ");
+                itemsToBuy++;
+            }
+        }
+
+        if (itemsToBuy < 1) {
+            toBuy.append(getString(R.string.no_items_to_buy));
+        }
+
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).getItemChecked() != 0) {
+                itemName = items.get(i).getItemName();
+                bought.append(itemName + ", ");
+                itemsBought++;
+            }
+        }
+
+        if (itemsBought > 0) {
+            toBuy.append(getString(R.string.bought));
+            toBuy.append(bought.toString());
+        }
+
+        return toBuy.toString();
+    }
+
     private void setToolbarToEachFrag(String title, boolean homeEnabled) {
         toolbar.setTitle(title);
         setSupportActionBar(toolbar);
@@ -147,7 +210,6 @@ public class AddItemsActivity extends AppCompatActivity
         });
     }
 
-
     @Override
     public void onCategoryListClick(int position) {
         Fragment fragment = new CategoryFragment();
@@ -172,6 +234,15 @@ public class AddItemsActivity extends AppCompatActivity
     }
 
     private void showListItems(Fragment fragment) {
+        Bundle args = new Bundle();
+        args.putParcelableArrayList(ShowItemsFragment.ITEMS_ARRAY, getItemsFromTable());
+        args.putString(ShowItemsFragment.CURRENT_NAME_LIST, listName);
+        fragment.setArguments(args);
+        runFragment(fragment);
+    }
+
+    private ArrayList<ItemProperties> getItemsFromTable() {
+        ArrayList<ItemProperties> items = null;
         try {
             db = openHelper.getReadableDatabase();
             Cursor cursor = db.query(listName + REST_OF_TABLE_NAME,
@@ -180,9 +251,8 @@ public class AddItemsActivity extends AppCompatActivity
                     "ITEM_CHECKED ASC");
 
             int count = cursor.getCount();
-            Bundle args = new Bundle();
 
-            ArrayList<ItemProperties> items = new ArrayList<>(count);
+            items = new ArrayList<>(count);
             if (count > 0) {
 
                 if (count > 0) {
@@ -190,26 +260,22 @@ public class AddItemsActivity extends AppCompatActivity
 
                     if (cursor.moveToFirst()) {
                         items.add(listNr, new ItemProperties(cursor.getString(0),
-                                                                cursor.getInt(1)));
+                                cursor.getInt(1)));
                         listNr++;
                     }
                     if (count > 1) {
                         while (cursor.moveToNext()) {
                             items.add(listNr,  new ItemProperties(cursor.getString(0),
-                                                                    cursor.getInt(1)));
+                                    cursor.getInt(1)));
                             listNr++;
                         }
                     }
                 }
             }
-            args.putParcelableArrayList(ShowItemsFragment.ITEMS_ARRAY, items);
-            args.putString(ShowItemsFragment.CURRENT_NAME_LIST, listName);
-            fragment.setArguments(args);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        runFragment(fragment);
+        return items;
     }
 
     private void addNewRecord(String lName) {

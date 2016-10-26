@@ -141,9 +141,6 @@ public class MainActivity extends AppCompatActivity implements
                 Intent intent = new Intent(this, PreferencesActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.nav_send:
-                Toast.makeText(this, "send", Toast.LENGTH_SHORT).show();
-                break;
             default:
                 break;
         }

@@ -17,13 +17,4 @@
 
     </group>
 
-    <item android:title="@string/nav_community">
-        <menu>
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="@string/nav_share" />
-        </menu>
-    </item>
-
 </menu>

@@ -94,7 +94,6 @@ public class ShowItemsFragment extends Fragment {
                                            boolean isChecked) {
                     workOnDb(name, UPDATE_ITEM_CHECK, isChecked);
                     items.set(position, new ItemProperties(name, checked));
-                    recyclerView.setAdapter(new CaptionedAddItemsAdapter(items));
                 }
             });
 
