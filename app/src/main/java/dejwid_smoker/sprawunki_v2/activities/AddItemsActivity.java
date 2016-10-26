@@ -216,6 +216,7 @@ public class AddItemsActivity extends AppCompatActivity
 
     private void createFabs() {
         fabAdd = (FloatingActionButton) findViewById(R.id.fab_test);
+
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
