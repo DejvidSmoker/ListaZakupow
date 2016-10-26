@@ -12,7 +12,6 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="fill_parent">
-        
 
         <ImageView
             android:id="@+id/delete_card_view_main"
@@ -21,24 +20,35 @@
             android:src="@drawable/ic_delete_forever_black_24dp"
             android:layout_height="match_parent" />
 
-
         <TextView
             android:id="@+id/text_card_main"
-            android:layout_weight="5"
+            android:layout_weight="6"
             android:layout_width="0dp"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginRight="5dp"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:layout_height="match_parent"
             android:text="sdsdsad"/>
-<!--
-        <CheckBox
-            android:id="@+id/checkbox_card_main"
+
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:layout_gravity="fill_horizontal"
-            android:gravity="center"/>-->
+            android:layout_weight="4"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:text="aaa:" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="aaa:" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
