@@ -64,7 +64,7 @@ public class AddItemFragment extends Fragment {
 
         ListViewCompat listView = (ListViewCompat) view.findViewById(R.id.category_list_view);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1,
+                android.R.layout.simple_expandable_list_item_1,
                 getResources().getStringArray(R.array.categories));
         listView.setAdapter(adapter);
 
@@ -82,8 +82,7 @@ public class AddItemFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String getTxt = editText.getText().toString();
-
-                if (getTxt != "") {
+                if (!getTxt.equals("")) {
                     listenerConfirm.onConfirmButtonClicked(getTxt);
                 }
             }

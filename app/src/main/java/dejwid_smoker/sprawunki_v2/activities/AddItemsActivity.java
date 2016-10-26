@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import java.util.ArrayList;
 
@@ -42,6 +43,7 @@ public class AddItemsActivity extends AppCompatActivity
     private static final boolean HOME_BUTTON_ENABLE = true;
     private static final boolean HOME_BUTTON_DISABLE = false;
 
+    private InputMethodManager keyboardHide;
     private FloatingActionButton fabAdd;
     private SQLiteDatabase db;
     private SQLiteOpenHelper openHelper;
@@ -95,7 +97,7 @@ public class AddItemsActivity extends AppCompatActivity
                 }
             }
         });
-
+        keyboardHide= (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         showCurrFrag(currentFrag);
         createFabs();
     }
@@ -116,7 +118,8 @@ public class AddItemsActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.share_list) {
+        int itemClick = item.getItemId();
+        if (itemClick == R.id.share_list) {
             Intent intentSend = new Intent();
             intentSend.setAction(Intent.ACTION_SEND);
             intentSend.putExtra(Intent.EXTRA_TITLE, listName);
@@ -126,6 +129,8 @@ public class AddItemsActivity extends AppCompatActivity
             if (intentSend.resolveActivity(getPackageManager()) != null) {
                 startActivity(intentSend);
             }
+        } else if (itemClick == R.id.refresh_list) {
+            showCurrFrag(SHOW_ITEMS_FRAGMENT);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -212,12 +217,13 @@ public class AddItemsActivity extends AppCompatActivity
 
     @Override
     public void onCategoryListClick(int position) {
+        keyboardHide.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+
         Fragment fragment = new CategoryFragment();
 
         Bundle args = new Bundle();
         args.putInt(CategoryFragment.POSITION_CATEGORY, position);
         fragment.setArguments(args);
-
         runFragment(fragment);
     }
 
@@ -229,6 +235,7 @@ public class AddItemsActivity extends AppCompatActivity
 
     @Override
     public void onConfirmButtonClicked(String recivedFromEditTxt) {
+        keyboardHide.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         addNewItemToDb(recivedFromEditTxt);
         showCurrFrag(SHOW_ITEMS_FRAGMENT);
     }

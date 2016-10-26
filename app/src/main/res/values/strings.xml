@@ -41,6 +41,8 @@
     <string name="to_buy">Lista:</string>
     <string name="no_items_to_buy">brak rzeczy do kupienia!</string>
     <string name="bought">Już kupione:</string>
+    <string name="refresh_list">Odśwież listę</string>
+    <string name="categories">Kategorie:</string>
 
 
 </resources>

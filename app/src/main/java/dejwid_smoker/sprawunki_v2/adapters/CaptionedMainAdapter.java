@@ -55,23 +55,25 @@ public class CaptionedMainAdapter extends RecyclerView.Adapter<CaptionedMainAdap
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        CardView cardView = holder.cardView;
+        final CardView cardView = holder.cardView;
 
-        ImageView imageView = (ImageView) cardView.findViewById(R.id.delete_card_view_main);
-        TextView textView = (TextView) cardView.findViewById(R.id.text_card_main);
+        final ImageView delete = (ImageView) cardView.findViewById(R.id.delete_card_view_main);
+        final TextView listName = (TextView) cardView.findViewById(R.id.text_card_main);
 
-        textView.setText(names.get(position));
+        listName.setText(names.get(position));
 
-        textView.setOnClickListener(new View.OnClickListener() {
+        listName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                cardView.setBackgroundResource(R.color.listClicked);
                 listener.onClick(position, names.get(position));
             }
         });
 
-        imageView.setOnClickListener(new View.OnClickListener() {
+        delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                delete.setBackgroundResource(R.color.listClicked);
                 listener.onClickDelete(position, names.get(position));
             }
         });

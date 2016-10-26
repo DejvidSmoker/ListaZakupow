@@ -27,13 +27,10 @@ public class CategoryFragment extends ListFragment {
     private OnItemCategoryClicked listener;
 
     public static final String POSITION_CATEGORY = "position_category";
-    public static final String ITEM_NAME = "item_name";
 
     private int arrayId;
 
-    public CategoryFragment() {
-        // Required empty public constructor
-    }
+    public CategoryFragment() { }
 
 
     @SuppressWarnings("deprecation")
@@ -56,7 +53,7 @@ public class CategoryFragment extends ListFragment {
         Log.v("position", String.valueOf(whichCategory));
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1,
+                android.R.layout.simple_expandable_list_item_1,
                 android.R.id.text1,
                 getArray(whichCategory));
 

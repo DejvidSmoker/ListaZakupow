@@ -57,7 +57,7 @@ public class CaptionedAddItemsAdapter extends
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        CardView cardView = holder.cardView;
+        final CardView cardView = holder.cardView;
 
         final ImageView delete = (ImageView) cardView.findViewById(R.id.delete_card_view_add_items);
         final TextView itemName = (TextView) cardView.findViewById(R.id.text_card_add_items);
@@ -68,8 +68,7 @@ public class CaptionedAddItemsAdapter extends
         itemName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                itemName.setBackgroundResource(R.color.item_clicked);
-                delete.setBackgroundResource(R.color.item_clicked);
+                cardView.setBackgroundResource(R.color.itemClicked);
                 listener.onClick(position, items.get(position).getItemName());
             }
         });
@@ -77,6 +76,7 @@ public class CaptionedAddItemsAdapter extends
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                delete.setBackgroundResource(R.color.itemClicked);
                 listener.onClickDelete(position, items.get(position).getItemName());
             }
         });

@@ -20,8 +20,8 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="5dp"
             android:gravity="center_vertical"
-            android:layout_height="match_parent"
-            />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_height="match_parent" />
 
         <ImageView
             android:id="@+id/delete_card_view_main"

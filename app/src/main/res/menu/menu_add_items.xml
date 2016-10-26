@@ -2,10 +2,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="dejwid_smoker.sprawunki_v2.activities.AddItemsActivity">
+
+    <item
+        android:id="@+id/refresh_list"
+        android:orderInCategory="100"
+        android:title="@string/refresh_list"
+        android:icon="@drawable/ic_refresh"
+        app:showAsAction="ifRoom|never" />
+
     <item
         android:id="@+id/share_list"
-        android:orderInCategory="100"
+        android:orderInCategory="200"
         android:title="@string/share_list"
         android:icon="@drawable/ic_menu_share"
-        app:showAsAction="always" />
+        app:showAsAction="never" />
+
 </menu>
